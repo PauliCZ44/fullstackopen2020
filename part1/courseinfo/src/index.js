@@ -68,14 +68,12 @@ Completed PART1 exercises firt part
 const Button = (props) => { 
   console.log("prop value is", props)
   const { onClick, text } = props
-
   return (
     <button onClick={onClick}>
       {text}
     </button>
   )
 }
-
 const History = (props) => {
     if (props.allClicks.length < 5) {
       return (
@@ -91,8 +89,6 @@ const History = (props) => {
       </div>
     )
   }
-
-
   const App = (props) => {
     const [left, setLeft] = useState(0)
     const [right, setRight] = useState(0)
@@ -130,14 +126,12 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
-
 */
 
 /*
@@ -149,7 +143,6 @@ const Hellou = (props) => {
     </div>
   )
 }
-
 const App2 = () => {
   console.log('Hello from component');
  // const now = new Date();  // <p>This is now: {now.toString()}</p>
@@ -158,7 +151,6 @@ const App2 = () => {
   return (
   <>
     <h1>Hello </h1>
-
     <br />
     <h1>Greetings</h1>
     <Hellou name="Strenger" age={26+10} />
@@ -167,5 +159,4 @@ const App2 = () => {
   </>
   )
 }
-
 */  
