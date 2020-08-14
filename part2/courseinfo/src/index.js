@@ -49,11 +49,8 @@ const Course = ({courses}) => {
   console.log(courses)
   return (
     <>
-    {/*<Header course={course.name} />
-    <Content parts={course.parts} />
-    <Total parts={course.parts} />*/}
-    {courses.map(x => 
-      <div key={x.id}>
+    {courses.map(x =>  /* Adding courses with .map funcion and giving div lement an ID */
+      <div key={x.id}>    
       <Header course={x.name}  />
       <Content parts={x.parts} />
       <Total parts={x.parts} />
