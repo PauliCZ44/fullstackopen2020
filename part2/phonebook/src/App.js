@@ -7,6 +7,7 @@ const App = () => {
   ]) 
   const [ newName, setNewName ] = useState('Add name here')
   const [ newNumber, setNewNumber ] = useState('')
+  const [ filterName, setFilterName ] = useState ("")
   
   const handleChangeName = (e) => {
       console.log(e.target.value)
@@ -15,6 +16,10 @@ const App = () => {
   const handleChangeNumber = (e) => {
     console.log(e.target.value)
     setNewNumber(e.target.value)
+}
+const handleChangeFilter = (e) => {
+  console.log(e.target.value)
+  setFilterName(e.target.value)
 }
 
   const addName = (e) => {
@@ -29,10 +34,32 @@ const App = () => {
     setNewName("")
   }
   }
-let personsList = persons.map(x => <li key={x.name}>{x.name} {x.number}</li>)
+
+  let searchInString = (str, subStr) => {
+  console.log(str, subStr)
+  if (str.indexOf(subStr) >= 0 ) {
+  return true
+  } else {
+    return false
+  }
+} 
+//console.log(searchInString(persons[0].name.toLowerCase(), filterName.toLowerCase()))
+let personsList = []
+if ( filterName  !== "" ) {
+  //když je filtr zaplý
+  console.log("FilterOn")
+  // console.log(persons.filter( x => searchInString(x.name.toLowerCase(), filterName.toLowerCase())))
+personsList = persons.filter( x => searchInString(x.name.toLowerCase(), filterName.toLowerCase())).map(x => <li key={x.name}>{x.name} {x.number}</li>)
+} else {
+  console.log("Filter OFF")
+personsList = persons.map(x => <li key={x.name}>{x.name} {x.number}</li>)
+}
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+          Filter by name: <input value={filterName} placeholder="Filter..." onChange={handleChangeFilter}/>
+        </div>
       <form>
         <div>
           Name: <input value={newName} placeholder="add new name" onChange={handleChangeName}/>
@@ -49,6 +76,7 @@ let personsList = persons.map(x => <li key={x.name}>{x.name} {x.number}</li>)
       <p>debug newName</p>
       <div>{newName}</div>
       <div>{newNumber}</div>
+      <div>{filterName}</div>
     </div>
   )
 }
