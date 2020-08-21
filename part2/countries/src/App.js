@@ -43,7 +43,8 @@ const App = () => {
         <h4>Found this:</h4>
         <ul>
           {arrayOfShownStates.map((state, i) => (
-            <StateName key={i} state={state} />
+
+            <StateName key={i} state={state} handleClickShow={() =>  setFilter(state.name)} /> 
           ))}
         </ul>
       </>

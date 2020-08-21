@@ -4,7 +4,7 @@ const StateName = (props) => {
   return (
     <>
       <p>
-        {props.state.name} <button>show</button>
+        {props.state.name} <button onClick={props.handleClickShow}>show</button>
       </p>
     </>
   );
