@@ -3,6 +3,7 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
 import axios from "axios";
+import contactService from "./services/contacts"
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -13,17 +14,19 @@ const App = () => {
     
   useEffect(() => {
     console.log("effect")
-    axios
-      .get("http://localhost:3001/persons")
-      .then((response) => {
-        //console.log('promise fulfilled')
-        setPersons(response.data)
+    contactService.getAllContacts()
+      .then((initialPersons) => {
+        console.log('promise fulfilled')
+        setPersons(initialPersons)
       });
   }, [])
+  
   console.log('render', persons.length, 'persons')
 
-
-
+  const handleChangeFilter = (e) => {
+    //console.log(e.target.value)
+    setFilterName(e.target.value);
+  };
   const handleChangeName = (e) => {
     //console.log(e.target.value)
     setNewName(e.target.value);
@@ -32,21 +35,19 @@ const App = () => {
     //console.log(e.target.value)
     setNewNumber(e.target.value);
   };
-  const handleChangeFilter = (e) => {
-    //console.log(e.target.value)
-    setFilterName(e.target.value);
-  };
+
 
   const addName = (e) => {
     e.preventDefault();
     //look at at the array of person and if there is not a name like newName then OK, else alert
     let newPerson = { name: newName, number: newNumber };
-    if (persons.filter((x) => x.name === newName).length > 0) {
+    if (persons.filter((x) => x.name === newName).length > 0) {  //if person wit same name is found
       alert(`${newName} is already added to phonebook`); //alt 96  or alt+``
     } else {
-      setPersons(persons.concat(newPerson));
-      // console.log("Person", persons)
-      setNewName("");
+      contactService.addNewContact(newPerson).then( addedContact => {
+        setPersons(persons.concat(addedContact));
+        setNewName("");
+      })
     }
   };
 
