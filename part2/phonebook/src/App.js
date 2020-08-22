@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
-import axios from "axios";
+
 import contactService from "./services/contacts"
 
 const App = () => {
@@ -36,9 +36,16 @@ const App = () => {
     setNewNumber(e.target.value);
   };
   const deleteContact = (id) => {
-    console.log("Delete", id)
-    contactService.deleteContact(id)
-    setPersons(persons.filter(p => p.id !== id))
+    let toBeDeletedPerson = persons.find(p => p.id === id).name
+    if (window.confirm(`Do you really want to delete "${toBeDeletedPerson}" from your phonebook?`)) { 
+      console.log("Deleted", toBeDeletedPerson, "id:", id)
+      contactService.deleteContact(id)
+      .then(setPersons(persons.filter(p => p.id !== id)))
+      
+    } else {
+      console.log("Not deleted")
+    }
+
   }
 
 
