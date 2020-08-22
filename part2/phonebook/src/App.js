@@ -35,6 +35,11 @@ const App = () => {
     //console.log(e.target.value)
     setNewNumber(e.target.value);
   };
+  const deleteContact = (id) => {
+    console.log("Delete", id)
+    contactService.deleteContact(id)
+    setPersons(persons.filter(p => p.id !== id))
+  }
 
 
   const addName = (e) => {
@@ -47,6 +52,7 @@ const App = () => {
       contactService.addNewContact(newPerson).then( addedContact => {
         setPersons(persons.concat(addedContact));
         setNewName("");
+        setNewNumber("");
       })
     }
   };
@@ -71,17 +77,18 @@ const App = () => {
       )
       .map((x) => (
         <li key={x.name}>
-          {x.name} {x.number}
+          {x.name} {x.number} <button onClick={() => deleteContact(x.id)}> Delete </button>
         </li>
       ));
   } else {
     //console.log("Filter OFF")
     personsList = persons.map((x) => (
       <li key={x.name}>
-        {x.name} {x.number}
+        {x.name} {x.number} <button onClick={() => deleteContact(x.id)}> Delete </button>
       </li>
     ));
   }
+
   return (
     <div>
       <h2>Phonebook</h2>
