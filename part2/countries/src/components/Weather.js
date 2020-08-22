@@ -4,6 +4,12 @@ import axios from "axios";
 
 const Weather = (props) => {
   //console.log(props.state);¨
+
+  /*
+    This component makes API calls too much, and my subscribcion of 1000 calls per mont has gone in ten seconds.
+  */
+
+
   const [weatherData, setWeatherData] = useState({})
   const [hasData, setHasData] = useState(false)
 
@@ -31,7 +37,12 @@ const Weather = (props) => {
         setHasData(true)
         }
     });
-  });
+  }, []);
+
+  //By default, effects run after every completed render, but you can choose to fire it only when certain values have changed.
+  //The second parameter of useEffect is used to specify how often the effect is run. If the second parameter is an empty array [], then the effect is only run along with the first render of the component.
+  // Therefore the parametr MUST be spceified so the calls to api are limited only when component is rendered!!!
+
   
   console.log(process.env.REACT_APP_API_KEY)
   return hasData ? (
