@@ -1,5 +1,5 @@
 import React from "react";
-
+import Weather from "./Weather"
 const State = (props) => {
   //console.log(props.state);
   let langs = props.state.languages.map((x) => <li key={x.name}>{x.name}</li>);
@@ -16,6 +16,7 @@ const State = (props) => {
         height="100px"
         alt={props.state.name + "Flag"}
       />
+      <Weather capital={props.state.capital}/>
     </>
   );
 };

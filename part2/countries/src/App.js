@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
 import State from "./components/State";
 import StateName from "./components/StateName";
 
@@ -16,6 +15,7 @@ const App = () => {
       setStates(response.data);
     });
   }, []);
+
 
   const handleChangeFilter = (e) => {
     setFilter(e.target.value);
