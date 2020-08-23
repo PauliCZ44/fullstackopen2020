@@ -53,8 +53,16 @@ const App = () => {
     e.preventDefault();
     //look at at the array of person and if there is not a name like newName then OK, else alert
     let newPerson = { name: newName, number: newNumber };
-    if (persons.filter((x) => x.name === newName).length > 0) {  //if person wit same name is found
-      alert(`${newName} is already added to phonebook`); //alt 96  or alt+``
+    let toBeChangedPerson = persons.find(p => p.name === newName)
+    if (persons.filter((x) => x.name === newName).length > 0) {  //if person with same name is found
+      if (window.confirm(`"${toBeChangedPerson.name}" is already added to your phnoebook, replace the old number with the new one?`)) {
+      contactService.changeContact(toBeChangedPerson.id, newPerson)
+      .then((response) => {
+        setPersons(persons.map(x => x.id === toBeChangedPerson.id ? newPerson : x))
+        setNewName("");
+        setNewNumber("");
+      })
+      }
     } else {
       contactService.addNewContact(newPerson).then( addedContact => {
         setPersons(persons.concat(addedContact));
