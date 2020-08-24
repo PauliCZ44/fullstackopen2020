@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import Filter from "./components/Filter";
+import Notification from "./components/Notification";
 
 import contactService from "./services/contacts"
 
@@ -10,6 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState("Add name here");
   const [newNumber, setNewNumber] = useState("");
   const [filterName, setFilterName] = useState("");
+  const [message, setMessage] = useState(null);
+  const [typeOfMessage, setTypeOfMessage] = useState(null)
 
     
   useEffect(() => {
@@ -21,7 +24,7 @@ const App = () => {
       });
   }, [])
   
-  console.log('render', persons.length, 'persons')
+  //console.log('render', persons.length, 'persons')
 
   const handleChangeFilter = (e) => {
     //console.log(e.target.value)
@@ -35,13 +38,22 @@ const App = () => {
     //console.log(e.target.value)
     setNewNumber(e.target.value);
   };
+
+  const makeMessage = (message) => {
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+    }, 2000)
+  }
   const deleteContact = (id) => {
     let toBeDeletedPerson = persons.find(p => p.id === id).name
     if (window.confirm(`Do you really want to delete "${toBeDeletedPerson}" from your phonebook?`)) { 
       console.log("Deleted", toBeDeletedPerson, "id:", id)
       contactService.deleteContact(id)
       .then(setPersons(persons.filter(p => p.id !== id)))
-      
+
+      makeMessage(`"${toBeDeletedPerson}" was deleted from your phonebook`, "error")
+
     } else {
       console.log("Not deleted")
     }
@@ -62,6 +74,7 @@ const App = () => {
         setNewName("");
         setNewNumber("");
       })
+      makeMessage(`"${toBeChangedPerson.name}" number was changed to "${newPerson.number}"`)
       }
     } else {
       contactService.addNewContact(newPerson).then( addedContact => {
@@ -69,6 +82,7 @@ const App = () => {
         setNewName("");
         setNewNumber("");
       })
+      makeMessage(`"${newPerson.name}" was added to your phonebook`)
     }
   };
 
@@ -107,8 +121,9 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message}/>
       <Filter handleChangeFilter={handleChangeFilter} filterName={filterName} />
-
+      <h3>Add a new:</h3>
       <PersonForm
         newName={newName}
         handleChangeName={handleChangeName}
