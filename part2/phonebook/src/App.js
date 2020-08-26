@@ -12,7 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filterName, setFilterName] = useState("");
   const [message, setMessage] = useState(null);
-  const [typeOfMessage, setTypeOfMessage] = useState(null)
+  const [messageIsError, setMessageIsError] = useState(false)
 
     
   useEffect(() => {
@@ -43,17 +43,26 @@ const App = () => {
     setMessage(message)
     setTimeout(() => {
       setMessage(null)
-    }, 2000)
+      setMessageIsError(false)
+    }, 5000)
   }
   const deleteContact = (id) => {
     let toBeDeletedPerson = persons.find(p => p.id === id).name
     if (window.confirm(`Do you really want to delete "${toBeDeletedPerson}" from your phonebook?`)) { 
       console.log("Deleted", toBeDeletedPerson, "id:", id)
       contactService.deleteContact(id)
-      .then(setPersons(persons.filter(p => p.id !== id)))
-
-      makeMessage(`"${toBeDeletedPerson}" was deleted from your phonebook`, "error")
-
+      .then(response => {
+        setPersons(persons.filter(p => p.id !== id))
+        makeMessage(`"${toBeDeletedPerson}" was deleted from your phonebook`)
+        setMessageIsError(true)
+      })
+      .catch(error => {
+        makeMessage(`"${toBeDeletedPerson}" was ALREADY removed from SERVER`)
+        setMessageIsError(true)
+        setPersons(persons.filter(p => p.id !== id))
+      })
+      makeMessage(`"${toBeDeletedPerson}" was deleted from your phonebook`)
+      setMessageIsError(true)
     } else {
       console.log("Not deleted")
     }
@@ -121,7 +130,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message}/>
+      <Notification message={message} error={messageIsError}/>
       <Filter handleChangeFilter={handleChangeFilter} filterName={filterName} />
       <h3>Add a new:</h3>
       <PersonForm
