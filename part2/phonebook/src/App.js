@@ -24,6 +24,11 @@ const App = () => {
       });
   }, [])
   
+  // Used just for logging the changes in persons
+  useEffect(() => {
+    console.log('Persons:', persons);
+  }, [persons]);
+
   //console.log('render', persons.length, 'persons')
 
   const handleChangeFilter = (e) => {
@@ -44,10 +49,11 @@ const App = () => {
     setTimeout(() => {
       setMessage(null)
       setMessageIsError(false)
-    }, 5000)
+    }, 2000)
   }
   const deleteContact = (id) => {
     let toBeDeletedPerson = persons.find(p => p.id === id).name
+   // console.log("To be deleted",toBeDeletedPerson)
     if (window.confirm(`Do you really want to delete "${toBeDeletedPerson}" from your phonebook?`)) { 
       console.log("Deleted", toBeDeletedPerson, "id:", id)
       contactService.deleteContact(id)
@@ -77,7 +83,7 @@ const App = () => {
     let toBeChangedPerson = persons.find(p => p.name === newName)
     if (persons.filter((x) => x.name === newName).length > 0) {  //if person with same name is found
       if (window.confirm(`"${toBeChangedPerson.name}" is already added to your phnoebook, replace the old number with the new one?`)) {
-      contactService.changeContact(toBeChangedPerson.id, newPerson)
+      contactService.changeContact(toBeChangedPerson.id, newPerson) //this is in ex 3.17
       .then((response) => {
         setPersons(persons.map(x => x.id === toBeChangedPerson.id ? newPerson : x))
         setNewName("");
@@ -85,13 +91,34 @@ const App = () => {
       })
       makeMessage(`"${toBeChangedPerson.name}" number was changed to "${newPerson.number}"`)
       }
-    } else {
-      contactService.addNewContact(newPerson).then( addedContact => {
-        setPersons(persons.concat(addedContact));
+    } else if (newPerson.name.length < 4) {
+      console.log("Wrong data")
+      setMessageIsError(true)
+      makeMessage("Person name must be at least 3 characters long")    
+    }  else if (newPerson.number.length < 9 ) {
+      setMessageIsError(true)
+      makeMessage("Number must be at least 8 characters long")    
+    }
+    else {
+      console.log("person with same name not found")
+      contactService
+      .addNewContact(newPerson)
+      .then( addedContact => {
+        console.log("PersonArr", persons)
+        console.log("NewPERSON", newPerson.name, newPerson.name.length < 4)
+        console.log("adding:", persons.concat(addedContact) )
+        setPersons(persons.concat(addedContact) );  //here should be persons.concat(addedContact)  ? from backend is send full array of persons! 
         setNewName("");
         setNewNumber("");
+        makeMessage(`"${newPerson.name}" was added to your phonebook`)
       })
-      makeMessage(`"${newPerson.name}" was added to your phonebook`)
+      .catch(error => {
+        console.log(error.response.data)
+        setMessageIsError(true)
+        //makeMessage(`"${newPerson.name}" was NOT added to your phonebook`)
+       makeMessage("NOT ADDED. Error: " + error.response.data.error)    
+      })
+
     }
   };
 
@@ -130,7 +157,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} error={messageIsError}/>
+
       <Filter handleChangeFilter={handleChangeFilter} filterName={filterName} />
       <h3>Add a new:</h3>
       <PersonForm
@@ -142,6 +169,7 @@ const App = () => {
       />
 
       <Persons list={personsList} />
+      <Notification message={message} error={messageIsError}/>
     </div>
   );
 };

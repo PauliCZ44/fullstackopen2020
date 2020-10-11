@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseURL = "http://localhost:3001/persons"
+const baseURL = "/api/persons"
 
 const getAllContacts = () => {
     const request = axios.get(baseURL)
@@ -9,12 +9,14 @@ const getAllContacts = () => {
 
 const addNewContact = (newObject) => {
     const request = axios.post(baseURL, newObject)
-    console.log("adding:", newObject)
+    //console.log("contacts.js - adding:", newObject)
     return request.then(response => response.data)
 }
 
 const deleteContact = (id) => {
     const request = axios.delete(baseURL+"/"+id )
+    console.log(id)
+    console.log(request)
     return request.then(response => response)
 }
 
