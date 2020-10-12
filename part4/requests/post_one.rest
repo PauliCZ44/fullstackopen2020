@@ -1,9 +1,7 @@
-POST http://localhost:3003/api/blogs
+POST https://mysterious-plains-93352.herokuapp.com/api/persons
 Content-Type: application/json
 
 {
-  "title": "Test2Title",
-  "author": "Some Author2",
-  "url": "wwww.123.com",
-  "likes": 2
+    "name": "SoAmkke naaame",
+    "number": "123-45679"
 }
