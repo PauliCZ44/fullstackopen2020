@@ -8,7 +8,7 @@ const totalLikes = (blogs) => {
   let likesCount = 0
 
   blogs.forEach(blog => {
-    //console.log('Total sum was', likesCount, 'Adding', blog.likes,)
+    //console.log('Total sum was', likesCount, 'Adding', blog.likes,)   //just for testing
     likesCount += blog.likes
   })
 
