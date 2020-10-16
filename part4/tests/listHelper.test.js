@@ -1,68 +1,6 @@
 /* eslint-disable no-undef */
 const listHelper = require('../utils/list_helper')
-
-const listWithOneBlog = [
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0
-  }
-]
-const listWithManyBlogs = [
-  {
-    _id: '5a422a851b54a676234d17f7',
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-    __v: 0
-  },
-  {
-    _id: '5a422aa71b54a676234d17f8',
-    title: 'Go To Statement Considered Harmful',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-    likes: 5,
-    __v: 0
-  },
-  {
-    _id: '5a422b3a1b54a676234d17f9',
-    title: 'Canonical string reduction',
-    author: 'Edsger W. Dijkstra',
-    url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
-    likes: 12,
-    __v: 0
-  },
-  {
-    _id: '5a422b891b54a676234d17fa',
-    title: 'First class tests',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-    likes: 10,
-    __v: 0
-  },
-  {
-    _id: '5a422ba71b54a676234d17fb',
-    title: 'TDD harms architecture',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
-    likes: 0,
-    __v: 0
-  },
-  {
-    _id: '5a422bc61b54a676234d17fc',
-    title: 'Type wars',
-    author: 'Robert C. Martin',
-    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-    likes: 2,
-    __v: 0
-  }
-]
-
-const listWithoutBlogs = []
+const helper = require('./test_helper')
 
 describe('dummy test', () => {
   test('dummy test returns always 1', () => {
@@ -75,17 +13,17 @@ describe('dummy test', () => {
 describe('total likes test', () => {
 
   test('when list is empty - zero', () => {
-    const result = listHelper.totalLikes(listWithoutBlogs)
+    const result = listHelper.totalLikes(helper.listWithoutBlogs)
     expect(result).toBe(0)
   })
 
   test('when list has only one blog, equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOneBlog)
+    const result = listHelper.totalLikes(helper.listWithOneBlog)
     expect(result).toBe(5)
   })
 
   test('when list has many blogs', () => {
-    expect(listHelper.totalLikes(listWithManyBlogs)).toBe(36)
+    expect(listHelper.totalLikes(helper.listWithManyBlogs)).toBe(36)
   })
 
 })
@@ -93,12 +31,12 @@ describe('total likes test', () => {
 describe('favorite blog test', () => {
 
   test('when list is empty - zero', () => {
-    const result = listHelper.favoriteBlog(listWithoutBlogs)
+    const result = listHelper.favoriteBlog(helper.listWithoutBlogs)
     expect(result.likes).toBe(0)
   })
 
   test('when list has only one blog, equals the likes of that', () => {
-    let result = listHelper.favoriteBlog(listWithOneBlog)
+    let result = listHelper.favoriteBlog(helper.listWithOneBlog)
     expect(result.likes).toBe(5)
   })
 
@@ -108,7 +46,7 @@ describe('favorite blog test', () => {
       author: 'Edsger W. Dijkstra',
       likes: 12
     }
-    let result = listHelper.favoriteBlog(listWithManyBlogs)
+    let result = listHelper.favoriteBlog(helper.listWithManyBlogs)
     expect(result.likes).toBe(12)
     expect(result).toEqual(mostLikes)
   })
@@ -118,12 +56,12 @@ describe('favorite blog test', () => {
 describe('Author with MOST BLOGS test', () => {
 
   test('when list is empty - empty object', () => {
-    let result = listHelper.mostBlogs(listWithoutBlogs)
+    let result = listHelper.mostBlogs(helper.listWithoutBlogs)
     expect(result).toEqual({})
   })
 
   test('when list has only one blog - 1 blog', () => {
-    let result = listHelper.mostBlogs(listWithOneBlog)
+    let result = listHelper.mostBlogs(helper.listWithOneBlog)
     let bestAuthor = {
       Author: 'Edsger W. Dijkstra',
       blogs: 1
@@ -137,7 +75,7 @@ describe('Author with MOST BLOGS test', () => {
       Author: 'Robert C. Martin',
       blogs: 3
     }
-    let result = listHelper.mostBlogs(listWithManyBlogs)
+    let result = listHelper.mostBlogs(helper.listWithManyBlogs)
     expect(result.blogs).toBe(3)
     expect(result).toEqual(bestAuthor)
   })
@@ -149,12 +87,12 @@ describe('Author with MOST BLOGS test', () => {
 describe('Author with most likes', () => {
 
   test('when list is empty - empty object', () => {
-    let result = listHelper.mostLikes(listWithoutBlogs)
+    let result = listHelper.mostLikes(helper.listWithoutBlogs)
     expect(result).toEqual({})
   })
 
   test('when list has only one blog - 1 blog', () => {
-    let result = listHelper.mostLikes(listWithOneBlog)
+    let result = listHelper.mostLikes(helper.listWithOneBlog)
     let bestAuthor = {
       Author: 'Edsger W. Dijkstra',
       likes: 5
@@ -168,7 +106,7 @@ describe('Author with most likes', () => {
       Author: 'Edsger W. Dijkstra',
       likes: 17
     }
-    let result = listHelper.mostLikes(listWithManyBlogs)
+    let result = listHelper.mostLikes(helper.listWithManyBlogs)
     expect(result.likes).toBe(17)
     expect(result).toEqual(bestAuthor)
   })

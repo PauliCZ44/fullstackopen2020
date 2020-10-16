@@ -84,7 +84,7 @@ const mostLikes = (blogs) => {
       authorWithMostLikes = authorsAndLikes[i]
     }
   })
-  console.log('bestOne:', authorWithMostLikes)
+  //console.log('bestOne:', authorWithMostLikes)
   return authorWithMostLikes
 }
 
