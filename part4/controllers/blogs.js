@@ -15,11 +15,6 @@ blogsRouter.post('/', async (request, response, next) => {
   } catch(exception) {
     next(exception)
   }
-  /*blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })*/
 })
 
 blogsRouter.get('/:id', (req, res, next) => {
