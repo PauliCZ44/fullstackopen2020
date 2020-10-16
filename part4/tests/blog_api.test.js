@@ -53,9 +53,17 @@ test('POST is working (4.10)', async () => {
     .expect('Content-Type', /application\/json/)
 
   let finalBlogs = await blogsInDb()
-  console.log("log in test", finalBlogs, "initial:", initialBlogs)
+  //console.log("log in test", finalBlogs, "initial:", initialBlogs)
+  //total number of vlogs is increased by one
   expect(initialBlogs.length).toBe(finalBlogs.length-1)
+
+  //test that on DB is content of new blog
+  let titles = finalBlogs.map(blog => blog.title)
+  expect(titles).toContain(newBlog.title)
 })
+
+
+
 
 
 afterAll(() => {
