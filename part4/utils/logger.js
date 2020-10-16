@@ -5,7 +5,9 @@ const info = (...params) => {
 }
 
 const error = (...params) => {
-  console.error(...params)
+  if (process.env.NODE_ENV !== 'test') {  //in tests dont show logger info
+    console.error(...params)
+  }
 }
 
 module.exports = {

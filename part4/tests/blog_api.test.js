@@ -1,11 +1,14 @@
+/* eslint-disable no-undef */
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')  //import app from app - express app
 const helper = require('./test_helper')
+const { blogsInDb } = require('./test_helper')
+
 const api = supertest(app)
 
 const Blog = require('../models/blog')
-const { blogsInDb } = require('./test_helper')
+
 
 
 const initialBlogs = helper.listWithTwoBlogs
@@ -62,8 +65,50 @@ test('POST is working (4.10)', async () => {
   expect(titles).toContain(newBlog.title)
 })
 
+test('POST blog with undefined likes has 0 likes and is added', async () => {
+  let initialBlogs = await blogsInDb()
+  const blogToBePosted =  {
+    title: 'Post without likes',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions2.html',
+  }
 
+  await api
+    .post('/api/blogs')
+    .send(blogToBePosted)
+    .expect(201)
 
+  let newBlogList = await blogsInDb()  //fetch array of blogs in DB
+  let hasZeroLikes = newBlogList[newBlogList.length-1]  //get the newest one
+  expect(hasZeroLikes.likes).toBe(0)    // it has 0 likes
+  expect(newBlogList.length).toBe(initialBlogs.length+1)
+})
+
+test('POST blog with undefined URL is not added', async () => {
+  const blogToBePosted =  {
+    title: '22Test2TAitle',
+    author: 'Robert C. Martin'
+  }
+  await api
+    .post('/api/blogs')
+    .send(blogToBePosted)
+    .expect(400)
+  let finalBlogs = await blogsInDb()
+  expect(initialBlogs.length).toBe(finalBlogs.length)
+})
+
+test('POST blog with undefined TITLE is not added', async () => {
+  const blogToBePosted =  {
+    url: 'wwww.12345.com',
+    author: 'Another C. Martin'
+  }
+  await api
+    .post('/api/blogs')
+    .send(blogToBePosted)
+    .expect(400)
+  let finalBlogs = await blogsInDb()
+  expect(initialBlogs.length).toBe(finalBlogs.length)
+})
 
 
 afterAll(() => {
