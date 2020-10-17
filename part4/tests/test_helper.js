@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const listWithOneBlog = [
   {
@@ -60,7 +61,6 @@ const listWithManyBlogs = [
     __v: 0
   }
 ]
-
 const listWithoutBlogs = []
 
 const listWithTwoBlogs =  [
@@ -83,10 +83,43 @@ const listWithTwoBlogs =  [
   }
 ]
 
+//USERS ARRAYS
+const listWithOneUser = [
+  {
+    blogs: [ ],
+    username: 'TestUserName',
+    name: 'TestName',
+    id: '5f8abcdfea9e0e2f2876c123'
+  }
+]
+
+const listWithTwoUsers = [
+  {
+    blogs: [ ],
+    username: 'TestUserName',
+    name: 'TestName',
+    id: '5f8abcdfea9e0e2f2876c123'
+  },
+  {
+    blogs: [ ],
+    username: 'SecondUsername',
+    name: 'TestName2',
+    id: 'aa8abcdfea9e0e2f2876c789'
+  }
+]
+
+
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
   return  blogs.map(blog => blog.toJSON())
   //vrací array blogů v DB
+}
+
+const usersInDB = async () => {
+  const users = await User.find({})
+  return  users.map(user => user.toJSON())
+  //vrací array userů v DB
 }
 
 
@@ -95,5 +128,8 @@ module.exports = {
   listWithManyBlogs,
   listWithoutBlogs,
   listWithTwoBlogs,
-  blogsInDb
+  listWithOneUser,
+  listWithTwoUsers,
+  blogsInDb,
+  usersInDB
 }
