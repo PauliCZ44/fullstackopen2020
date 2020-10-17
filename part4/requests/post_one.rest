@@ -1,6 +1,8 @@
-POST http://localhost:3003/api/blogs 
+POST http://localhost:3003/api/blogs/5f8a8a37fb93052424b77683
 Content-Type: application/json
 
 {
-"author": "Some Author23"
+"title": "22Test2TAitlePUTMETHOD", 
+"url": "wwww.1234.com",
+"likes": 50
 }
