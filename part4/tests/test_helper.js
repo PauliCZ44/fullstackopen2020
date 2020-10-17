@@ -70,6 +70,7 @@ const listWithTwoBlogs =  [
     author: 'Michael Chan',
     url: 'https://reactpatterns.com/',
     likes: 7,
+    user: '5f8abcccea9e0e2f2876cd87',
     __v: 0
   },
   {
@@ -79,6 +80,7 @@ const listWithTwoBlogs =  [
     url:
         'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
     likes: 5,
+    user: '5f8abcccea9e0e2f2876cd87',
     __v: 0
   }
 ]

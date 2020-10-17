@@ -1,8 +1,9 @@
-POST http://localhost:3003/api/blogs/5f8a8a37fb93052424b77683
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-"title": "22Test2TAitlePUTMETHOD", 
-"url": "wwww.1234.com",
-"likes": 50
+"title": "React is good", 
+"url": "wwww.pauli123.com",
+"likes": 124,
+"author": "Pavel Šťastný"
 }

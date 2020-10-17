@@ -41,8 +41,8 @@ describe('POST methods for users', () => {
     expect(initUsers.length).toBe(finalUsers.length-1)
 
     //test that on DB is content of new blog
-   let usernames = finalUsers.map(blog => blog.username)
-   expect(usernames).toContain(newUser.username)
+    let usernames = finalUsers.map(blog => blog.username)
+    expect(usernames).toContain(newUser.username)
   })
 
   test('POST user without username or password wont save', async () => {
@@ -63,9 +63,9 @@ describe('POST methods for users', () => {
   test('POST user with username that is not unique wont save him', async () => {
     let initUsers = await usersInDB()
     const newUser =  {
-      username: "TestUserName",
+      username: 'TestUserName',
       name: 'RandomName',
-      password: "sekretpass"
+      password: 'sekretpass'
     }
     const result = await api
       .post('/api/users')

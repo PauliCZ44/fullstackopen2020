@@ -72,7 +72,7 @@ describe('POST methods', () => {
     const blogToBePosted =  {
       title: 'Post without likes',
       author: 'Robert C. Martin',
-      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions2.html',
+      url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions2.html'
     }
 
     await api
@@ -103,6 +103,7 @@ describe('POST methods', () => {
     const blogToBePosted =  {
       url: 'wwww.12345.com',
       author: 'Another C. Martin'
+      //userId: '5f8abcccea9e0e2f2876cd87'
     }
     await api
       .post('/api/blogs')
