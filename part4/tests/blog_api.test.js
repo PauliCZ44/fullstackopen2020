@@ -114,7 +114,7 @@ describe('POST methods', () => {
 })
 
 describe('DELETE', () => {
-  test('DELETE is working 4.13', async () => {
+  test('DELETE method is working 4.13', async () => {
     let initialBlogs = await blogsInDb()
     let adress = '/api/blogs/' + initialBlogs[1]['id']
     // console.log('adress = ', adress)
@@ -128,7 +128,7 @@ describe('DELETE', () => {
 })
 
 describe('PUT', () => {
-  test('PUT is working 4.14', async () => {
+  test('PUT method is working 4.14', async () => {
     let initialBlogs = await blogsInDb()
     let adress = '/api/blogs/' + initialBlogs[1]['id']
     let randLikes = Math.floor(Math.random()*100)
