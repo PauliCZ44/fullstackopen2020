@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdWxpQ1o0NCIsImlkIjoiNWY4YWYzYTkyZmNiZjEwYWRjNzBmYzIyIiwiaWF0IjoxNjAzMDA2OTU5fQ.-4etKkWRBf50XKtFhcw5UC4zo3XAJssk-RUQGJlpD5U
 
 {
-"title": "React is good", 
+"title": "Im logged in and i have token", 
 "url": "wwww.pauli123.com",
-"likes": 124,
+"likes": 1,
 "author": "Pavel Šťastný"
 }
