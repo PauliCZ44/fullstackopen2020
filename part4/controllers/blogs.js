@@ -1,4 +1,5 @@
 const blogsRouter = require('express').Router()
+const { request } = require('express')
 const jwt = require('jsonwebtoken')
 //const { response } = require('../app')
 const Blog = require('../models/blog')
@@ -10,23 +11,19 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
-const getTokenFrom = request => {   //helper fction for authorization 
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7) //returns token code
-  }
-  return null
-}
 
+ // MY VERSION of CODE //
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  //const token = getTokenFrom(request)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  //const decodedToken = jwt.decode(request.token, process.env.SECRET);
+  if (!request.token  || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
+
   const user = await User.findById(decodedToken.id)
- // let allUsers = await User.find({})             //User.findById(request.body.userId)  -- for simplicity, userId doesnt have to be specified.
+  // let allUsers = await User.find({})             //User.findById(request.body.userId)  -- for simplicity, userId doesnt have to be specified.
   //let user = allUsers[0]
   const blog = new Blog({
     title: body.title,
@@ -60,8 +57,23 @@ blogsRouter.get('/:id', (req, res, next) => {
 
 
 blogsRouter.delete('/:id', async (req, res, next) => {
+  const decodedToken = jwt.verify(req.token, process.env.SECRET)
+
+  if (!req.token || !decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+  const blog = await Blog.findById(req.params.id)
+
+  if (blog.user.toString() !== user.id.toString()) {
+    return res.status(401).json({ error: 'only the creator of the blog can delete blogs' })
+  }
+
   try {
-    await Blog.findByIdAndRemove(req.params.id)
+    await blog.remove()
+    user.blogs = user.blogs.filter(b => b.id.toString() !== req.params.id.toString())
+    await user.save()
     res.status(204).end()
     console.log('blog was deleted')
   } catch(exception) {
@@ -76,7 +88,7 @@ blogsRouter.put('/:id', async (req, res, next) => {
   const body = req.body
   //console.log("Body", body)
   const blogToBeSaved = {
-    author: body.author ? body.author : blogToBeChanged.author,
+    author: body.author ? body.author : blogToBeChanged.author,  //basicly change only what meant to be changed
     title: body.title ? body.title : blogToBeChanged.title,
     url: body.url ? body.url : blogToBeChanged.url,
     likes: body.likes

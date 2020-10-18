@@ -24,6 +24,7 @@ beforeEach(async () => {
 
 describe('POST methods for users', () => {
   test('POST is working - saving a user', async () => {
+
     let initUsers = await usersInDB()
 
     const newUser =  {
@@ -33,6 +34,7 @@ describe('POST methods for users', () => {
     }
     await api
       .post('/api/users')
+      .set('Authorization', 'bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdWxpQ1o0NCIsImlkIjoiNWY4YWYzYTkyZmNiZjEwYWRjNzBmYzIyIiwiaWF0IjoxNjAzMDA2OTU5fQ.-4etKkWRBf50XKtFhcw5UC4zo3XAJssk-RUQGJlpD5U')
       .send(newUser)
       .expect(201)
       .expect('Content-Type', /application\/json/)

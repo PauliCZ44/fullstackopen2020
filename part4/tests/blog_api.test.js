@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')  //import app from app - express app
 const helper = require('./test_helper')
-const { blogsInDb } = require('./test_helper')
+const { blogsInDb, usersInDB } = require('./test_helper')
 
 const api = supertest(app)
 
@@ -42,18 +42,41 @@ describe('DB Structure', () => {
 })
 
 describe('POST methods', () => {
+  let headers
+
+  beforeEach(async () => {
+    const newUser = {
+      username: 'janedoez',
+      name: 'Jane Z. Doe',
+      password: 'password',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+
+    const result = await api
+      .post('/api/login')
+      .send(newUser)
+
+    headers = {
+      'Authorization': `bearer ${result.body.token}`
+    }
+  })
+
   test('POST is working - 4.10', async () => {
     let initialBlogs = await blogsInDb()
 
     const newBlog =  {
       title: 'First class tests',
-      author: 'Robert C. Martin',
+      author: 'TestUserName',
       url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
       likes: 10
     }
     await api
       .post('/api/blogs')
       .send(newBlog)
+      .set(headers)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
@@ -78,6 +101,7 @@ describe('POST methods', () => {
     await api
       .post('/api/blogs')
       .send(blogToBePosted)
+      .set(headers)
       .expect(201)
 
     let newBlogList = await blogsInDb()  //fetch array of blogs in DB
@@ -94,6 +118,7 @@ describe('POST methods', () => {
     await api
       .post('/api/blogs')
       .send(blogToBePosted)
+      .set(headers)
       .expect(400)
     let finalBlogs = await blogsInDb()
     expect(initialBlogs.length).toBe(finalBlogs.length)
@@ -108,6 +133,7 @@ describe('POST methods', () => {
     await api
       .post('/api/blogs')
       .send(blogToBePosted)
+      .set(headers)
       .expect(400)
     let finalBlogs = await blogsInDb()
     expect(initialBlogs.length).toBe(finalBlogs.length)
@@ -115,16 +141,40 @@ describe('POST methods', () => {
 })
 
 describe('DELETE', () => {
-  test('DELETE method is working 4.13', async () => {
+
+  let headers
+
+  beforeEach(async () => {
+    const newUser = {
+      username: 'janedoez',
+      name: 'Jane Z. Doe',
+      password: 'password',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+
+    const result = await api
+      .post('/api/login')
+      .send(newUser)
+
+    headers = {
+      'Authorization': `bearer ${result.body.token}`
+    }
+  })
+
+  test('DELETE of blog of a stranger result in 401', async () => {
     let initialBlogs = await blogsInDb()
     let adress = '/api/blogs/' + initialBlogs[1]['id']
     // console.log('adress = ', adress)
     await api
       .delete(adress)
-      .expect(204)
+      .expect(401)
+      .set(headers)
 
     let newBlogList = await blogsInDb()  //fetch array of blogs in DB
-    expect(newBlogList.length).toBe(initialBlogs.length-1)
+    expect(newBlogList.length).toBe(initialBlogs.length)
   })
 })
 
