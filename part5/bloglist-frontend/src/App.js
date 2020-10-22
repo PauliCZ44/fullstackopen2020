@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
@@ -10,6 +11,8 @@ const App = () => {
   const [username, setUsername] = useState('')   //states for user management
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
+
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -59,6 +62,8 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogAppUser')
   }
 
+
+
   if ( user === null) {
     return (
       <>
@@ -78,20 +83,20 @@ const App = () => {
   }
     return (
       <>
-      <div className="bg-black p-4 ">
-        <h2 className="text-center text-light">BLOGS APP</h2>
-      </div>
-        <div className="container">
-         <p className="text-right">Logged as {user.username}. Welcome back!
+      <div className="bg-black pt-5 pb-2 mb-5">
+        <h1 className="text-center text-light">BLOGS APP</h1>
+      <div className="container">
+        <p className="text-right text-white-50">Logged as {user.username}. Welcome back!
            <button 
            onClick = {handleLogout}
-           className="btn btn-dark btn-sm px-4 my-2 ml-4">
+           className="btn btn-dark btn-sm px-4 ml-4 logout-btn">
              Log Out
             </button>
         </p>
-
-        <h3>Add blogs:</h3>
-
+      </div>
+      </div>
+        <div className="container">
+        <BlogForm setBlogs = {setBlogs} blogs={blogs}/>
         <h3>Current saved blogs:</h3>
 
         {blogs.map(blog =>
