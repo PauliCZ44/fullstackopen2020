@@ -21,6 +21,7 @@ const BlogForm = (props) => {
     setTitle('')
     setAuthor('')
     setUrl('')
+    props.makeMessage('Blog added')
     props.setBlogs(props.blogs.concat(res))
   }  
 

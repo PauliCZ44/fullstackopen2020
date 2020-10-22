@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css';
@@ -11,7 +12,8 @@ const App = () => {
   const [username, setUsername] = useState('')   //states for user management
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
-
+  const [message, setMessage] = useState ('')
+  const [messageIsError, setMessageIsError] = useState(false)
 
 
   useEffect(() => {
@@ -33,6 +35,17 @@ const App = () => {
     }
   }, [])
 
+  const makeMessage = (message, error) => {
+    if (error) {
+      setMessageIsError(true)
+    }
+    setMessage(message)
+    setTimeout(() => {
+      setMessage(null)
+      setMessageIsError(false)
+    }, 2300)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     console.log('logging in with', username, password)
@@ -48,11 +61,12 @@ const App = () => {
       setPassword('')
       //setErrorMessage('Logged in')
       console.log("logged in")
-
+      makeMessage('You were logged in')
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(loggedUser))
     } catch (exception) {
      console.log('Wrong credentials')
      console.log(exception)
+     makeMessage('Wrong credentials', true)
     }
   }
 
@@ -60,6 +74,7 @@ const App = () => {
     console.log("logging out")
     setUser(null)
     window.localStorage.removeItem('loggedBlogAppUser')
+    makeMessage('You were logged out', true)
   }
 
 
@@ -70,6 +85,9 @@ const App = () => {
        <div className="container">
          <h1 className="text-center my-5">BLOGS APP</h1>
         <h5  className="text-center m-4">Log in to application please</h5>
+        <div class='wrapNotif'>
+        <Notification message={message} error={messageIsError} screen={'login'}/>
+        </div>
         <LoginForm 
           handleLogin={handleLogin} 
           username={username} 
@@ -85,18 +103,21 @@ const App = () => {
       <>
       <div className="bg-black pt-5 pb-2 mb-5">
         <h1 className="text-center text-light">BLOGS APP</h1>
-      <div className="container">
-        <p className="text-right text-white-50">Logged as {user.username}. Welcome back!
-           <button 
-           onClick = {handleLogout}
-           className="btn btn-dark btn-sm px-4 ml-4 logout-btn">
-             Log Out
-            </button>
-        </p>
-      </div>
-      </div>
         <div className="container">
-        <BlogForm setBlogs = {setBlogs} blogs={blogs}/>
+          <p className="text-right text-white-50">Logged as {user.username}. Welcome back!
+            <button 
+            onClick = {handleLogout}
+            className="btn btn-dark btn-sm px-4 ml-4 logout-btn">
+              Log Out
+              </button>
+          </p>
+        </div>
+      </div>
+        <div className="container"> 
+        <div class='wrapNotif'>
+        <Notification message={message} error={messageIsError} screen={'blogList'}/>
+        </div>
+        <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage}/>
         <h3>Current saved blogs:</h3>
 
         {blogs.map(blog =>

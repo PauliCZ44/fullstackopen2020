@@ -26,11 +26,33 @@ animation: opacity-and-scale 0.75s ease-in-out;
  animation: opacity-and-scale 0.55s ease-in-out;
 }
 
+.login-notif {
+ padding-left: 1rem;
+ font-weight: 600;
+ max-width: 550px;
+ margin-right: auto;
+ margin-left: auto;
+ animation: opacity-and-scale 0.55s ease-in-out;
+}
+
 .addBlog-card {
   max-width: 750px;
   margin-right: auto;
   margin-left: auto;
   animation: opacity 1.75s ease-in-out;
+}
+
+.add-blog-notif {
+  padding-left: 1rem;
+  font-weight: 600;
+  max-width: 750px;
+  margin-right: auto;
+  margin-left: auto;
+  animation: opacity 0.75s ease-in-out;
+}
+
+.wrapNotif {
+  min-height: 24px;
 }
 
 .submitBtn{
@@ -48,6 +70,7 @@ animation: opacity-and-scale 0.75s ease-in-out;
 .bg-black{
   background-color: #1a1a1a
 }
+
 
 
 @keyframes opacity-and-scale {
