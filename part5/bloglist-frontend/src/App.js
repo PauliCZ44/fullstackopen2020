@@ -131,7 +131,7 @@ const App = () => {
 
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
-        )}
+        ).reverse()}
         <p>{user.name}</p>
         <p>{user.token}</p>
       </div>
