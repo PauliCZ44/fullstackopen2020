@@ -122,7 +122,7 @@ const App = () => {
         onClick = {toggleAddNewBlog}
         className = 'btn btn-block btn-dark addBlog-card p-3 my-3 mb-5'
         style = {hideWhenVisible}>
-          ADD NEW BLOG
+          CREATE A NEW BLOG
         </button>
         <div style = {showWhenVisible}>
         <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage} toggleAddNewBlog={toggleAddNewBlog} showWhenVisible={showWhenVisible}/>
