@@ -48,23 +48,15 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('logging in with', username, password)
-
     try {
-    console.log("try blovk´´ck start")
     const loggedUser = await loginService.login({ username, password, })
-    console.log("try block 2nd")
     blogService.setToken(loggedUser.token)  //setting token for user
       setUser(loggedUser)
-      console.log("Logged user:", loggedUser)
       setUsername('')
       setPassword('')
-      //setErrorMessage('Logged in')
-      console.log("logged in")
       makeMessage('You were logged in')
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(loggedUser))
     } catch (exception) {
-     console.log('Wrong credentials')
      console.log(exception)
      makeMessage('Wrong credentials', true)
     }
@@ -85,7 +77,7 @@ const App = () => {
        <div className="container">
          <h1 className="text-center my-5">BLOGS APP</h1>
         <h5  className="text-center m-4">Log in to application please</h5>
-        <div class='wrapNotif'>
+        <div className='wrapNotif'>
         <Notification message={message} error={messageIsError} screen={'login'}/>
         </div>
         <LoginForm 
@@ -114,7 +106,7 @@ const App = () => {
         </div>
       </div>
         <div className="container"> 
-        <div class='wrapNotif'>
+        <div className='wrapNotif'>
         <Notification message={message} error={messageIsError} screen={'blogList'}/>
         </div>
         <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage}/>
