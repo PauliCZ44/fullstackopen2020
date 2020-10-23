@@ -14,6 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState ('')
   const [messageIsError, setMessageIsError] = useState(false)
+  const [addNewVisible, setAddNewVisible] = useState(false)
 
 
   useEffect(() => {
@@ -34,6 +35,14 @@ const App = () => {
       console.log("Local storage empty, you have to login")
     }
   }, [])
+
+  const toggleAddNewBlog = () => {
+    setAddNewVisible(!addNewVisible)
+    console.log(addNewVisible)
+  }
+
+  const hideWhenVisible = { display: addNewVisible ? 'none' : '' }
+  const showWhenVisible = { display: addNewVisible ? '' : 'none' }
 
   const makeMessage = (message, error) => {
     if (error) {
@@ -109,7 +118,15 @@ const App = () => {
         <div className='wrapNotif'>
         <Notification message={message} error={messageIsError} screen={'blogList'}/>
         </div>
-        <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage}/>
+        <button 
+        onClick = {toggleAddNewBlog}
+        className = 'btn btn-block btn-dark addBlog-card p-3 my-3 mb-5'
+        style = {hideWhenVisible}>
+          ADD NEW BLOG
+        </button>
+        <div style = {showWhenVisible}>
+        <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage} toggleAddNewBlog={toggleAddNewBlog} showWhenVisible={showWhenVisible}/>
+        </div>
         <h3>Current saved blogs:</h3>
 
         {blogs.map(blog =>

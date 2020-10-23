@@ -35,18 +35,21 @@ const BlogForm = (props) => {
     }
     console.log(blogObject)
     let res = await blogService.create(blogObject)
-    props.makeMessage(`Blog "${title}" was added`)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-    setIsNotFilled(false, false, false)
-    props.setBlogs(props.blogs.concat(res))
+    if (res) {
+      props.makeMessage(`Blog "${title}" was added`)
+      setTitle('')
+      setAuthor('')
+      setUrl('')
+      setIsNotFilled(false, false, false)
+      props.toggleAddNewBlog()
+      props.setBlogs(props.blogs.concat(res))
+    }
   }  
 
  return (
   <div className="card px-3 mt-2 mb-5 addBlog-card hv-center shadow">
   <h3 className="text-center py-3">Add blog:</h3>
-  <form>
+  <form onSubmit = {handleAddBlog }>
   <div className="form-group row">
     <label  
       htmlFor="inputTitle" 
@@ -61,7 +64,7 @@ const BlogForm = (props) => {
         placeholder="Enter title" 
         value={title}
         onChange = {({ target }) => setTitle(target.value)}
-        required
+ 
       />
     </div>
   </div>
@@ -79,7 +82,7 @@ const BlogForm = (props) => {
         placeholder="Enter author"
         value={author}
         onChange = {({ target }) => setAuthor(target.value)}
-        required
+  
       />
     </div>
   </div>
@@ -97,7 +100,7 @@ const BlogForm = (props) => {
         placeholder="Enter URL"
         value={url}
         onChange = {({ target }) => setUrl(target.value)}
-        required
+
       />
       <small id="help" className="form-text text-muted">* must be provided</small>
 
@@ -107,10 +110,16 @@ const BlogForm = (props) => {
     <div className="col-sm-10">
       <button 
       type="submit" 
-      className="btn btn-info px-5 save-btn"
+      className="btn btn-info px-5 save-btn mr-4 mb-2"
       onClick={handleAddBlog}>
         Save 
       </button>
+      <button 
+        type="button"
+        className="btn btn-danger px-5 cancel-btn mb-2 "
+        onClick = {props.toggleAddNewBlog}>
+          Cancel
+        </button>
     </div>
   </div>
 </form>
