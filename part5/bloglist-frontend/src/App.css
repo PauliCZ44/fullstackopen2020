@@ -67,13 +67,14 @@ animation: opacity-and-scale 0.75s ease-in-out;
   border: lightslategrey 1px solid;
 }
 
-.cancel-btn {
-  box-shadow:  2px 2px 6px 0px grey;
+.blogHeader h5 {
+  font-weight: 750;
 }
 
-.save-btn {
+.save-btn, .cancel-btn{
   box-shadow:  2px 2px 6px 0px grey
 }
+
 
 .bg-black{
   background-color: #1a1a1a

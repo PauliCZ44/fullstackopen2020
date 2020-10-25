@@ -23,6 +23,21 @@ const App = () => {
     )  
   }, [])
 
+  /*let testBlogs = [
+    {title: "Test",
+    author: "AA",
+    url: "XX",
+    likes: 1,
+    user: {
+    username: "PauliCZ44",
+    name: "Pavel Happy",
+    id: "5f8af3a92fcbf10adc70fc22"
+    },
+    id: "5f91bb74b3a6e83998b9aa59"
+    }]
+  */
+
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON){
@@ -114,7 +129,7 @@ const App = () => {
           </p>
         </div>
       </div>
-        <div className="container"> 
+      <div className="container"> 
         <div className='wrapNotif'>
         <Notification message={message} error={messageIsError} screen={'blogList'}/>
         </div>
@@ -126,15 +141,17 @@ const App = () => {
         </button>
         <div style = {showWhenVisible}>
         <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage} toggleAddNewBlog={toggleAddNewBlog} showWhenVisible={showWhenVisible}/>
-        </div>
+        </div> 
+        <div className = 'blogSection'>
         <h3>Current saved blogs:</h3>
-
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        ).reverse()}
-        <p>{user.name}</p>
-        <p>{user.token}</p>
+        {blogs
+          .sort((a, b) => b.likes-a.likes)
+          .map(blog =>
+          <Blog key={blog.id} blog={blog} user={user} setBlogs={setBlogs} blogs={blogs} makeMessage={makeMessage} />
+          )}
+        </div>
       </div>
+      <footer className = 'text-center bg-black text-white-50 mt-5 pt-3 pb-2'>Made by Pavel Stastny @2020</footer>
       </>
     )
   }

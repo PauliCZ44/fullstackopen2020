@@ -20,4 +20,21 @@ const create = async (blogToBeSaved) => {
   return response.data
 }
 
-export default { getAll, setToken, create }
+const deleteBlog = async (blogToBeDeleted) => {
+  console.log("token:", token)
+  const config = {headers: { Authorization: token}}
+  let url = baseUrl+'/'+blogToBeDeleted.id
+  const response = await axios.delete(url, config)
+  return response.data
+}
+
+const put = async (blogToBePutted) => {
+  let url = baseUrl+'/'+blogToBePutted.id
+  console.log(url)
+  const config = {headers: { Authorization: token}}
+  const response = await axios.put(url, blogToBePutted, config)
+  console.log("Put METHDON, token:", token)
+  return response.data
+}
+
+export default { getAll, setToken, create, put , deleteBlog }

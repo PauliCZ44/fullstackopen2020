@@ -34,6 +34,7 @@ const BlogForm = (props) => {
       url
     }
     console.log(blogObject)
+    try {
     let res = await blogService.create(blogObject)
     if (res) {
       props.makeMessage(`Blog "${title}" was added`)
@@ -44,6 +45,10 @@ const BlogForm = (props) => {
       props.toggleAddNewBlog()
       props.setBlogs(props.blogs.concat(res))
     }
+  } catch (error) {
+    props.makeMessage('ERROR - Blog was not added', true)
+    console.log("error::", error)
+  }
   }  
 
  return (
