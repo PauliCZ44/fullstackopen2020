@@ -140,7 +140,7 @@ const App = () => {
           CREATE A NEW BLOG
         </button>
         <div style = {showWhenVisible}>
-        <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage} toggleAddNewBlog={toggleAddNewBlog} showWhenVisible={showWhenVisible}/>
+        <BlogForm setBlogs = {setBlogs} blogs={blogs} makeMessage={makeMessage} toggleAddNewBlog={toggleAddNewBlog} showWhenVisible={showWhenVisible} user = {user}/>
         </div> 
         <div className = 'blogSection'>
         <h3>Current saved blogs:</h3>

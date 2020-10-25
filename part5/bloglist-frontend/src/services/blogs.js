@@ -16,7 +16,7 @@ const create = async (blogToBeSaved) => {
   console.log("token:", token)
   const config = {headers: { Authorization: token}}
   const response = await axios.post(baseUrl, blogToBeSaved, config)
-  console.log("token:", token)
+  console.log(response.data)
   return response.data
 }
 
@@ -37,4 +37,11 @@ const put = async (blogToBePutted) => {
   return response.data
 }
 
-export default { getAll, setToken, create, put , deleteBlog }
+const getOne = async (blogToBeFound) => {
+  let url = baseUrl+'/'+blogToBeFound.id
+  const response = await axios.get(url)
+  console.log(response.data)
+  return response.data
+}
+
+export default { getAll, setToken, create, put , deleteBlog, getOne }

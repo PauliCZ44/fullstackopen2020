@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
-
+import PropTypes from 'prop-types'
+//icons
 import { HandThumbsUp } from 'react-bootstrap-icons';
 
 const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
@@ -54,7 +55,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
         </button>
       </p>
       <p className='mb-1'>User: {blog.user.username}</p>
-      { blog.user.username === user.username   //pokud je přihlášený uživatel stejný jako uživatel co vytvořil blog
+      { blog.user.username === user.username || typeof blog.user  === 'string'  //pokud je přihlášený uživatel stejný jako uživatel co vytvořil blog
         ? <button
           className='btn btn-sm btn-danger px-2 px-sm-4 py-1'
           onClick={handleDeleteBlog}>
@@ -62,7 +63,6 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
           </button>
         : <p>You can not delete this blog. This was created by {blog.user.username}</p>
       }
-
     </div>
   )
 
@@ -86,5 +86,20 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
     </div>
   )
 }
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  blogs: PropTypes.array.isRequired,
+  setBlogs:PropTypes.func.isRequired,
+  makeMessage: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+}
+
+/* TEST BUTTONS 
+      <p>User</p>
+      <button onClick = {()=> console.log(user)}>User: </button> 
+      <p>Blog:</p>
+      <button onClick = {()=> console.log(blog)}>BLOG</button> 
+*/
 
 export default Blog

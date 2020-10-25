@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import blogService from '../services/blogs'
 
+
 const BlogForm = (props) => {
   const[title, setTitle] = useState('')
   const[author, setAuthor] = useState('')
@@ -43,12 +44,17 @@ const BlogForm = (props) => {
       setUrl('')
       setIsNotFilled(false, false, false)
       props.toggleAddNewBlog()
-      props.setBlogs(props.blogs.concat(res))
+      console.log("response after create:", res)
+      let newBlog = await blogService.getOne(res)
+      console.log("NeBlog", newBlog)
+      props.setBlogs(props.blogs.concat(newBlog))
     }
   } catch (error) {
     props.makeMessage('ERROR - Blog was not added', true)
     console.log("error::", error)
   }
+
+
   }  
 
  return (
