@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 //icons
-import { HandThumbsUp } from 'react-bootstrap-icons';
+import { HandThumbsUp } from 'react-bootstrap-icons'
 
 const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
 
@@ -10,11 +10,11 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
   const [likes, setLikes] = useState(blog.likes)
   const toggleShowDetails = () => {
     setShowDetails(!showDetails)
-    console.log("toggle details")
+    console.log('toggle details')
   }
 
   const handleDeleteBlog = async (e) => {
-    console.log("deleting blog")
+    console.log('deleting blog')
     e.preventDefault()
     let blogToDelete = blog
     if (window.confirm(`Do you really want to delete "${blogToDelete.title}" from your phonebook?`)) {
@@ -22,7 +22,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
       setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id)) //filter blogs
       makeMessage('Blog was deleted!')
     } else {
-      makeMessage("Blog was not deleted", true)
+      makeMessage('Blog was not deleted', true)
     }
   }
 
@@ -49,9 +49,9 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
         <button
           onClick={sendPut}
           className="btn btn-sm btn-secondary py-0 px-3 ml-4 font-weight-bold">
-            <span>Like 
-              < HandThumbsUp size={18} className='ml-1  font-weight-bold'/>
-            </span>
+          <span>Like
+            < HandThumbsUp size={18} className='ml-1  font-weight-bold'/>
+          </span>
         </button>
       </p>
       <p className='mb-1'>User: {blog.user.username}</p>
@@ -60,7 +60,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
           className='btn btn-sm btn-danger px-2 px-sm-4 py-1'
           onClick={handleDeleteBlog}>
           DELETE
-          </button>
+        </button>
         : <p>You can not delete this blog. This was created by {blog.user.username}</p>
       }
     </div>
@@ -75,8 +75,8 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
           <button
             className='btn btn-sm btn-info px-2 px-sm-4 py-1 ml-auto mr-1 mr-sm-3 align-self-center'
             onClick={toggleShowDetails}>
-             {showDetails ? 'Hide details' :  'Show details'} 
-    </button>
+            {showDetails ? 'Hide details' :  'Show details'}
+          </button>
         </div>
 
         {showDetails ? details() : null}
@@ -95,11 +95,11 @@ Blog.propTypes = {
   user: PropTypes.object.isRequired,
 }
 
-/* TEST BUTTONS 
+/* TEST BUTTONS
       <p>User</p>
-      <button onClick = {()=> console.log(user)}>User: </button> 
+      <button onClick = {()=> console.log(user)}>User: </button>
       <p>Blog:</p>
-      <button onClick = {()=> console.log(blog)}>BLOG</button> 
+      <button onClick = {()=> console.log(blog)}>BLOG</button>
 */
 
 export default Blog

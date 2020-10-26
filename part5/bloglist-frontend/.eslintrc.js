@@ -16,7 +16,7 @@ module.exports = {
       "sourceType": "module"
   },
   "plugins": [
-      "react", "jest"
+      "react", "jest", "eslint-plugin-html"
   ],
   "rules": {
       "indent": [
@@ -25,7 +25,7 @@ module.exports = {
       ],
       "linebreak-style": [
           "error",
-          "unix"
+          "windows"
       ],
       "quotes": [
           "error",
