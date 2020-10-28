@@ -43,12 +43,12 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
   }
 
   const details = () => (
-    <div >
+    <div className = 't_detailsDiv'>
       <p className='mb-1'>URL: <a href={blog.url}>{blog.url}</a></p>
       <p className='mb-1'>Likes: {likes}
         <button
           onClick={sendPut}
-          className="btn btn-sm btn-secondary py-0 px-3 ml-4 font-weight-bold">
+          className="btn btn-sm btn-secondary py-0 px-3 ml-4 font-weight-bold t_LikeBtn">
           <span>Like
             < HandThumbsUp size={18} className='ml-1  font-weight-bold'/>
           </span>
@@ -73,7 +73,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
         <div className='d-flex'>
           <h5 className='py-1 mb-2'>{blog.title} <span className='text-muted'> by {blog.author} </span></h5>
           <button
-            className='btn btn-sm btn-info px-2 px-sm-4 py-1 ml-auto mr-1 mr-sm-3 align-self-center'
+            className='btn btn-sm btn-info px-2 px-sm-4 py-1 ml-auto mr-1 mr-sm-3 align-self-center t_LikeBtn'
             onClick={toggleShowDetails}>
             {showDetails ? 'Hide details' :  'Show details'}
           </button>
@@ -89,10 +89,10 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  blogs: PropTypes.array.isRequired,
-  setBlogs:PropTypes.func.isRequired,
-  makeMessage: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  blogs: PropTypes.array,
+  setBlogs:PropTypes.func,
+  makeMessage: PropTypes.func,
+  user: PropTypes.object,
 }
 
 /* TEST BUTTONS
