@@ -6,7 +6,7 @@ const LoginForm = (props) => {
     <div className="card px-sm-4 mt-2 login-card hv-center shadow">
       <form className="p-2">
         <div className="form-group text-left mt-3">
-          <label className="font-weight-bold">User name</label>
+          <label className="font-weight-bold">Username</label>
           <input type="text"
             value={props.username}
             className="form-control"
@@ -23,7 +23,6 @@ const LoginForm = (props) => {
             placeholder="Password"
             value={props.password}
             onChange={({ target }) => props.setPassword(target.value)}
-
           />
         </div>
         <button
@@ -31,7 +30,13 @@ const LoginForm = (props) => {
           className="btn btn-dark my-3 px-5 submitBtn"
           onClick={props.handleLogin}
         >
-                Login
+          Login
+        </button>
+        <button
+          type="button"
+          onClick={props.switchToRegister}
+          className="btn btn-info my-3 px-4 submitBtn float-right">
+           Create Account
         </button>
       </form>
     </div>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import LoginForm from './components/LoginForm'
+import RegistrationForm from './components/RegistrationForm'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import registerService from './services/register'
 import './App.css'
 
 const App = () => {
@@ -12,30 +14,18 @@ const App = () => {
   const [username, setUsername] = useState('')   //states for user management
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
+  const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [name, setName] = useState('Pavel S2')
   const [message, setMessage] = useState('')
   const [messageIsError, setMessageIsError] = useState(false)
   const [addNewVisible, setAddNewVisible] = useState(false)
+  const [registration, setRegistration] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
   }, [])
-
-  /*let testBlogs = [
-    {title: 'Test',
-    author: 'AA',
-    url: 'XX',
-    likes: 1,
-    user: {
-    username: 'PauliCZ44',
-    name: 'Pavel Happy',
-    id: '5f8af3a92fcbf10adc70fc22'
-    },
-    id: '5f91bb74b3a6e83998b9aa59'
-    }]
-  */
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -68,16 +58,13 @@ const App = () => {
       msgExisted = false
     }
 
-    if (error) {
-      setMessageIsError(true)
-    }
-
+    if (error) { setMessageIsError(true) }
     setMessage(messageRec)
     if(msgExisted){
       setTimeout(() => {
-        if (error) {
-          setMessageIsError(true)
-        }
+
+        if (error) { setMessageIsError(true) }
+
         setMessage(messageRec)
         setTimeout(() => {
           setMessage(null)
@@ -109,6 +96,17 @@ const App = () => {
     }
   }
 
+  const switchToRegister = (event) => {
+    event.preventDefault()
+    setPassword('')
+    setRegistration(!registration)
+  }
+
+  const handleCreateAccount = (event) => {
+    event.preventDefault()
+    console.log('Try to create an account')
+  }
+
   const handleLogout = () => {
     console.log('logging out')
     setUser(null)
@@ -127,26 +125,56 @@ const App = () => {
       })
   }
 
-  if (user === null) {
+  if (user === null && registration === false) {
     return (
       <>
         <div className='container'>
           <h1 className='text-center my-5'>BLOGS APP</h1>
           <h5 className='text-center m-4'>Log in to application please</h5>
           <div className='wrapNotif'>
-            <Notification message={message} error={messageIsError} screen={'login'} />
+            <Notification message= { message } error = { messageIsError } screen = { 'login' } />
           </div>
           <LoginForm
-            handleLogin={handleLogin}
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
+            handleLogin = { handleLogin }
+            username = { username }
+            setUsername = { setUsername }
+            password = { password }
+            setPassword = { setPassword }
+            switchToRegister = {switchToRegister}
           />
         </div>
       </>
     )
   }
+
+  if (user === null && registration === true ) {
+    return (
+      <>
+        <div className='container'>
+          <h1 className='text-center my-5'>BLOGS APP</h1>
+          <h5 className='text-center m-4'>Register to application</h5>
+          <div className='wrapNotif'>
+            <Notification message={message} error={messageIsError} screen={'login'} />
+          </div>
+          <RegistrationForm
+            username = { username }
+            setUsername = { setUsername }
+            password = { password }
+            setPassword = { setPassword }
+            passwordConfirm = { passwordConfirm }
+            setName = { setName }
+            name = { name }
+            setPasswordConfirm = { setPasswordConfirm }
+            handleCreateAccount = { handleCreateAccount }
+            switchToRegister = { switchToRegister }
+            makeMessage = { makeMessage }
+            registerService = { registerService.register }
+          />
+        </div>
+      </>
+    )
+  }
+
   return (
     <main>
       <header className='bg-black pt-5 pb-2 mb-5'>
