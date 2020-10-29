@@ -8,6 +8,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) =
 
   const [showDetails, setShowDetails] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
+  const [likeIsDisabled, setLikeIsDiabled] = useState(false)
   const toggleShowDetails = () => {
     setShowDetails(!showDetails)
     console.log('toggle details')
@@ -28,8 +29,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) =
 
   const sendPut = async (e) => {
     e.preventDefault()
-    setLikes(likes + 1)
-    // console.log(blog)
+    //setLikeIsDiabled(true)  //this will break the test for likes
     let blogToPut = {
       id: blog.id,
       user: blog.user,
@@ -39,6 +39,12 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) =
       url: blog.url
     }
     blogServiceUpdate(blogToPut)
+    console.log('like given')
+    setLikes(likes + 1)
+    setLikeIsDiabled(true)
+    setTimeout(() => {
+      setLikeIsDiabled(false)
+    }, 3000)                           // =========  LIKE SPAM PROTECTION  ==============
     //let res = await blogService.put(blogToPut)   // ->> moved to app.js
   }
 
@@ -48,7 +54,8 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) =
       <p className='mb-1 t_likesCount'>Likes: {likes}
         <button
           onClick={sendPut}
-          className="btn btn-sm btn-secondary py-0 px-3 ml-4 font-weight-bold t_LikeBtn">
+          className="btn btn-sm btn-secondary py-0 px-3 ml-4 font-weight-bold t_LikeBtn"
+          disabled={likeIsDisabled}>
           Like
           < HandThumbsUp size={18} className='ml-1  font-weight-bold'/>
         </button>

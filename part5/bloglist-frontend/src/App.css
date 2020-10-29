@@ -1,11 +1,21 @@
-body {
+body, html, main {
   background-color: whitesmoke;
+}
+
+.appWrapper {
+ min-height: calc(100vh - 208px - 87px);  /*One way to calc footer position - 100 vh minus header minus footer (margins included)*/
 }
 
 h1, h2, h3 {
   color: #0e0e0e
 }
 
+.footer {
+  width: 100%;
+  line-height: 40px;
+  background-color: #343a40;
+  flex-shrink: 0;
+}
 
 .blogHeader {
 border-width: 5px;
@@ -45,6 +55,7 @@ animation: opacity-and-scale 0.75s ease-in-out;
   max-width: 750px;
 }
 
+/* Adding blog panel as a floating card */
 @media screen and (min-width: 576px) {
   .addBlog-panel {
     background-color: rgba(255, 255, 255, 0.97);
@@ -77,10 +88,6 @@ animation: opacity-and-scale 0.75s ease-in-out;
       width: 1110px;
   }
 }
-
-
-
-
 
 
 .add-blog-notif {

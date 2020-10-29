@@ -55,18 +55,42 @@ const App = () => {
     console.log(addNewVisible)
   }
 
+  // eslint-disable-next-line no-unused-vars
   const hideWhenVisible = { display: addNewVisible ? 'none' : '' }
   const showWhenVisible = { display: addNewVisible ? '' : 'none' }
 
-  const makeMessage = (message, error) => {
+  const makeMessage = (messageRec, error) => {
+    let msgExisted
+
+    if (message) {
+      msgExisted = true
+    } else {
+      msgExisted = false
+    }
+
     if (error) {
       setMessageIsError(true)
     }
-    setMessage(message)
+
+    setMessage(messageRec)
+    if(msgExisted){
+      setTimeout(() => {
+        if (error) {
+          setMessageIsError(true)
+        }
+        setMessage(messageRec)
+        setTimeout(() => {
+          setMessage(null)
+          setMessageIsError(false)
+        }, 3000)
+      }, 2300)
+    }
     setTimeout(() => {
-      setMessage(null)
-      setMessageIsError(false)
-    }, 2300)
+      if (!msgExisted) {
+        setMessage(null)
+        setMessageIsError(false)
+      }
+    }, 3000)
   }
 
   const handleLogin = async (event) => {
@@ -124,8 +148,8 @@ const App = () => {
     )
   }
   return (
-    <>
-      <div className='bg-black pt-5 pb-2 mb-5'>
+    <main>
+      <header className='bg-black pt-5 pb-2 mb-5'>
         <h1 className='text-center text-light'>BLOGS APP</h1>
         <div className='container'>
           <p className='text-right text-white-50'>Logged as {user.username}. Welcome back!
@@ -136,22 +160,30 @@ const App = () => {
             </button>
           </p>
         </div>
-      </div>
-      <div className='container'>
+      </header>
+      <section className='container appWrapper'>
         <div className='wrapNotif'>
           <Notification message={message} error={messageIsError} screen={'blogList'} />
         </div>
         <button
           onClick={toggleAddNewBlog}
           className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5 addBlog-Btn'
-
-         >
+          /*</div>{/* style={hideWhenVisible}}*/
+        >
           CREATE A NEW BLOG
         </button>
         <div style={showWhenVisible}>
-          <BlogForm setBlogs={setBlogs} blogs={blogs} makeMessage={makeMessage} toggleAddNewBlog={toggleAddNewBlog} showWhenVisible={showWhenVisible} user={user} />
+          <BlogForm
+            setBlogs={setBlogs}
+            blogs={blogs}
+            makeMessage={makeMessage}
+            toggleAddNewBlog={toggleAddNewBlog}
+            user={user}
+            blogServiceCreate={blogService.create}
+            blogServiceGetOne = {blogService.getOne}
+          />
         </div>
-        <div className='blogSection'>
+        <section className='blogSection'>
           <h3>Current saved blogs:</h3>
           {blogs
             .sort((a, b) => b.likes - a.likes)
@@ -166,10 +198,10 @@ const App = () => {
                 blogServiceUpdate = {blogServiceUpdate}
               />
             )}
-        </div>
-      </div>
-      <footer className='text-center bg-black text-white-50 mt-5 pt-3 pb-2'>Made by Pavel Stastny @2020</footer>
-    </>
+        </section>
+      </section>
+      <footer className='text-center text-white-50 mt-5 footer'>Made by Pavel Stastny @2020</footer>
+    </main>
   )
 }
 

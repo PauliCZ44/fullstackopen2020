@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const BlogForm = (props) => {
+
+const BlogForm = ({ makeMessage, blogServiceCreate, blogServiceGetOne, toggleAddNewBlog, setBlogs, blogs }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -20,15 +20,15 @@ const BlogForm = (props) => {
   const handleAddBlog = async (e) => {
     e.preventDefault()
     if (title === '') {
-      props.makeMessage('Please fill in the Title', true)
+      makeMessage('Please fill in the Title', true)
       setIsNotFilled([true, false, false])
       return
     } else if (author === '') {
-      props.makeMessage('Please fill in the Author', true)
+      makeMessage('Please fill in the Author', true)
       setIsNotFilled([false, true, false])
       return
     } else if (url === '') {
-      props.makeMessage('Please fill in the URL', true)
+      makeMessage('Please fill in the URL', true)
       setIsNotFilled([false, false, true])
       return
     }
@@ -38,23 +38,23 @@ const BlogForm = (props) => {
       author,
       url,
     }
-    console.log(blogObject)
+    //console.log(blogObject)
     try {
-      let res = await blogService.create(blogObject)
+      let res = await blogServiceCreate(blogObject)
       if (res) {
-        props.makeMessage(`Blog "${title}" was added`)
+        makeMessage(`Blog "${title}" was added`)
         setTitle('')
         setAuthor('')
         setUrl('')
         setIsNotFilled(false, false, false)
-        props.toggleAddNewBlog()
-        console.log('response after create:', res)
-        let newBlog = await blogService.getOne(res)
-        console.log('NeBlog', newBlog)
-        props.setBlogs(props.blogs.concat(newBlog))
+        toggleAddNewBlog()
+        //console.log('response after create:', res)
+        let newBlog = await blogServiceGetOne(res)
+        //console.log('NewBlog', newBlog)
+        setBlogs(blogs.concat(newBlog))
       }
     } catch (error) {
-      props.makeMessage('ERROR - Blog was not added', true)
+      makeMessage('ERROR - Blog was not added', true)
       console.log('error::', error)
     }
   }
@@ -101,7 +101,7 @@ const BlogForm = (props) => {
         </div>
         <div className="form-group row">
           <label
-            htmlFor="inputAuthor"
+            htmlFor="inputURL"
             className="col-sm-3 col-md-2 col-form-label font-weight-bold  pl-sm-4"
           >
             URL*:
@@ -110,7 +110,7 @@ const BlogForm = (props) => {
             <input
               type="text"
               className={styleFilledU}
-              id="inputAuthor"
+              id="inputURL"
               placeholder="Enter URL"
               value={url}
               onChange={({ target }) => setUrl(target.value)}
@@ -132,7 +132,7 @@ const BlogForm = (props) => {
             <button
               type="button"
               className="btn btn-danger px-5 cancel-btn mb-2 "
-              onClick={props.toggleAddNewBlog}
+              onClick={toggleAddNewBlog}
             >
               Cancel
             </button>
