@@ -143,8 +143,9 @@ const App = () => {
         </div>
         <button
           onClick={toggleAddNewBlog}
-          className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5'
-          style={hideWhenVisible}>
+          className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5 addBlog-Btn'
+
+         >
           CREATE A NEW BLOG
         </button>
         <div style={showWhenVisible}>

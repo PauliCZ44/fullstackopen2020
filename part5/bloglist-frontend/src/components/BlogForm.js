@@ -60,7 +60,7 @@ const BlogForm = (props) => {
   }
 
   return (
-    <div className="card px-3 mt-2 mb-5 addBlog-card hv-center shadow">
+    <div className="card px-3 mt-2 mb-5 addBlog-card hv-center shadow-lg addBlog-panel">
       <h3 className="text-center py-3">Add blog:</h3>
       <form onSubmit={handleAddBlog}>
         <div className="form-group row">

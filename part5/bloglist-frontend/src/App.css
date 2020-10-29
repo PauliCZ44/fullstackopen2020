@@ -36,11 +36,52 @@ animation: opacity-and-scale 0.75s ease-in-out;
 }
 
 .addBlog-card {
-  max-width: 750px;
   margin-right: auto;
   margin-left: auto;
   animation: opacity 0.55s ease-in-out;
 }
+
+.addBlog-Btn {
+  max-width: 750px;
+}
+
+@media screen and (min-width: 576px) {
+  .addBlog-panel {
+    background-color: rgba(255, 255, 255, 0.97);
+    position: absolute;
+    z-index: 5;
+    min-width: 320px;
+    top: 240px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 576px) {
+  .addBlog-panel{
+      width: 510px;
+  }
+}
+@media (min-width: 768px) { 
+  .addBlog-panel{
+      width: 690px;
+  }
+}
+@media (min-width: 992px) {
+  .addBlog-panel {
+      width: 930px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .addBlog-panel {
+      width: 1110px;
+  }
+}
+
+
+
+
+
 
 .add-blog-notif {
   padding-left: 1rem;
