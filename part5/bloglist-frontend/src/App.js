@@ -16,7 +16,6 @@ const App = () => {
   const [messageIsError, setMessageIsError] = useState(false)
   const [addNewVisible, setAddNewVisible] = useState(false)
 
-  
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -93,7 +92,16 @@ const App = () => {
     makeMessage('You were logged out', true)
   }
 
-
+  const blogServiceUpdate = (blog) => {
+    blogService.put(blog)
+      .then(() => {
+        makeMessage(`you liked "${blog.title}" by ${blog.author}`)
+      })
+      .catch(err => {
+        setMessage('error updating likes', true)
+        console.error(err)
+      })
+  }
 
   if (user === null) {
     return (
@@ -147,7 +155,15 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map(blog =>
-              <Blog key={blog.id} blog={blog} user={user} setBlogs={setBlogs} blogs={blogs} makeMessage={makeMessage} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                user={user}
+                setBlogs={setBlogs}
+                blogs={blogs}
+                makeMessage={makeMessage}
+                blogServiceUpdate = {blogServiceUpdate}
+              />
             )}
         </div>
       </div>

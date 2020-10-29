@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 //icons
 import { HandThumbsUp } from 'react-bootstrap-icons'
 
-const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
+const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) => {
 
   const [showDetails, setShowDetails] = useState(false)
   const [likes, setLikes] = useState(blog.likes)
@@ -29,7 +29,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
   const sendPut = async (e) => {
     e.preventDefault()
     setLikes(likes + 1)
-    console.log(blog)
+    // console.log(blog)
     let blogToPut = {
       id: blog.id,
       user: blog.user,
@@ -38,20 +38,19 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
       title: blog.title,
       url: blog.url
     }
-    let res = await blogService.put(blogToPut)
-    console.log('like added on backend too', res)
+    blogServiceUpdate(blogToPut)
+    //let res = await blogService.put(blogToPut)   // ->> moved to app.js
   }
 
   const details = () => (
     <div className = 't_detailsDiv'>
       <p className='mb-1'>URL: <a href={blog.url}>{blog.url}</a></p>
-      <p className='mb-1'>Likes: {likes}
+      <p className='mb-1 t_likesCount'>Likes: {likes}
         <button
           onClick={sendPut}
           className="btn btn-sm btn-secondary py-0 px-3 ml-4 font-weight-bold t_LikeBtn">
-          <span>Like
-            < HandThumbsUp size={18} className='ml-1  font-weight-bold'/>
-          </span>
+          Like
+          < HandThumbsUp size={18} className='ml-1  font-weight-bold'/>
         </button>
       </p>
       <p className='mb-1'>User: {blog.user.username}</p>
@@ -73,7 +72,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user }) => {
         <div className='d-flex'>
           <h5 className='py-1 mb-2'>{blog.title} <span className='text-muted'> by {blog.author} </span></h5>
           <button
-            className='btn btn-sm btn-info px-2 px-sm-4 py-1 ml-auto mr-1 mr-sm-3 align-self-center t_LikeBtn'
+            className='btn btn-sm btn-info px-2 px-sm-4 py-1 ml-auto mr-1 mr-sm-3 align-self-center t_DetailsBtn'
             onClick={toggleShowDetails}>
             {showDetails ? 'Hide details' :  'Show details'}
           </button>

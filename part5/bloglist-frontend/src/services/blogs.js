@@ -33,7 +33,7 @@ const put = async (blogToBePutted) => {
   console.log(url)
   const config = { headers: { Authorization: token } }
   const response = await axios.put(url, blogToBePutted, config)
-  console.log('Put METHDON, token:', token)
+  console.log('Put METHDON, data:', response.data)
   return response.data
 }
 
