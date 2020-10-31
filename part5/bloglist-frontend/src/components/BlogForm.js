@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const BlogForm = ({ makeMessage, blogServiceCreate, blogServiceGetOne, toggleAddNewBlog, setBlogs, blogs }) => {
+const BlogForm = ({ makeMessage, blogServiceCreate, blogServiceGetOne, toggleAddNewBlog, setBlogs, blogs, username }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -33,13 +33,14 @@ const BlogForm = ({ makeMessage, blogServiceCreate, blogServiceGetOne, toggleAdd
       return
     }
 
-    const blogObject = {
+    let blogObject = {
       title,
       author,
       url,
     }
     //console.log(blogObject)
     try {
+
       let res = await blogServiceCreate(blogObject)
       if (res) {
         makeMessage(`Blog "${title}" was added`)
@@ -50,7 +51,9 @@ const BlogForm = ({ makeMessage, blogServiceCreate, blogServiceGetOne, toggleAdd
         toggleAddNewBlog()
         //console.log('response after create:', res)
         let newBlog = await blogServiceGetOne(res)
-        //console.log('NewBlog', newBlog)
+        console.log('NewBlog', newBlog)
+        delete newBlog.user
+        newBlog.user = { username: username }
         setBlogs(blogs.concat(newBlog))
       }
     } catch (error) {

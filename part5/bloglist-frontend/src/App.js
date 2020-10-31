@@ -4,9 +4,14 @@ import RegistrationForm from './components/RegistrationForm'
 import BlogForm from './components/BlogForm'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import AboutUsers from './components/AboutUsers'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import registerService from './services/register'
+import Footer from './components/Footer'
+import userService from './services/users'
+//import userService from '../services/users'
+
 import './App.css'
 
 const App = () => {
@@ -15,16 +20,31 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
-  const [name, setName] = useState('Pavel S2')
+  const [name, setName] = useState('')
   const [message, setMessage] = useState('')
   const [messageIsError, setMessageIsError] = useState(false)
   const [addNewVisible, setAddNewVisible] = useState(false)
   const [registration, setRegistration] = useState(false)
+  const [registeredUsers, setRegisteredUsers] = useState([])
+  const [stats, setStats] = useState({
+    mostLikes: 0,
+    mostLikesUser: '',
+    mostLikedBlogTitle: '',
+    mostlikedBlogUser: '',
+    mostLikedBlogLikes: 0,
+    mostBlogs: '',
+    mostLikesNumberOfBlogs: 0,
+  })
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
+  }, [])
+
+  useEffect(() => {
+    userService.getAllUsers().then( users =>
+      setRegisteredUsers(users))
   }, [])
 
   useEffect(() => {
@@ -51,7 +71,6 @@ const App = () => {
 
   const makeMessage = (messageRec, error) => {
     let msgExisted
-
     if (message) {
       msgExisted = true
     } else {
@@ -62,15 +81,13 @@ const App = () => {
     setMessage(messageRec)
     if(msgExisted){
       setTimeout(() => {
-
         if (error) { setMessageIsError(true) }
-
         setMessage(messageRec)
         setTimeout(() => {
           setMessage(null)
           setMessageIsError(false)
         }, 3000)
-      }, 2300)
+      }, 3300)
     }
     setTimeout(() => {
       if (!msgExisted) {
@@ -125,6 +142,94 @@ const App = () => {
       })
   }
 
+  /*============= STATISTICS FUNCTIONS =============*/
+
+  const mostLikes = (blogs) => {
+    let authorWithMostLikes = {}
+    let authorsAndLikes = []
+    blogs.forEach(blog => {    //make array of authors and number of blogs
+      if (authorsAndLikes.findIndex(el => el.Author === blog.author) === -1) {  //if author is not found, push it to the array
+        authorsAndLikes.push({ Author: blog.author, likes: blog.likes, numberOfBlogs: 1 })
+      } else {
+        // increase number of blogs
+        let index = authorsAndLikes.findIndex(auth => auth.Author === blog.author)
+        authorsAndLikes[index].likes += blog.likes
+        authorsAndLikes[index].numberOfBlogs ++
+      }
+    })
+    let maxLikes = Math.max(...authorsAndLikes.map(b => b.likes), 0)  //find max number of blogs
+    authorsAndLikes.forEach( () => {
+      let i = authorsAndLikes.findIndex(el => el.likes === maxLikes)
+      if (i > -1) {
+        authorWithMostLikes = authorsAndLikes[i]
+      }
+    })
+    //console.log('bestOne:', authorWithMostLikes)
+    return authorWithMostLikes
+  }
+
+  const favoriteBlog = (blogs) => {
+    let result = {
+      title: '',
+      author: '',
+      likes: 0
+    }
+    blogs.forEach(blog => {
+      if (blog.likes > result.likes) {
+        result = {
+          title: blog.title,
+          author: blog.author,
+          likes: blog.likes
+        }
+      }
+    })
+    return result
+  }
+
+  const mostBlogs = (blogs) => {
+    // vytvořit array of objects s autory a počtem blogů
+    let authors = []
+    let bestAuthor = {}
+
+    blogs.forEach(blog => {    //make array of authors and number of blogs
+      if (authors.findIndex(el => el.Author === blog.author) === -1) {  //if author is not found, push it to the array
+        authors.push({ Author: blog.author, blogs: 1, likes: blog.likes })
+      } else {
+        // increase number of blogs
+        let index = authors.findIndex(auth => auth.Author === blog.author)
+        authors[index].blogs ++
+        authors[index].likes += blog.likes
+      }
+    })
+    let maxBlogs = Math.max(...authors.map(b => b.blogs), 0)  //find max number of blogs
+    authors.forEach( () => {
+      let i = authors.findIndex(el => el.blogs === maxBlogs)
+      if (i > -1) {
+        bestAuthor = authors[i]
+      }
+    })
+    console.log('BestAUth', bestAuthor)
+    return bestAuthor
+  }
+  useEffect(() => {
+    let mostLikesRes = mostLikes(blogs)
+    let favoriteBlogRes = favoriteBlog(blogs)
+    let mostBlogsRes = mostBlogs(blogs)
+    setStats({
+      mostLikes: mostLikesRes.likes,
+      mostLikesUser: mostLikesRes.Author,
+      mostLikesNumberOfBlogs: mostLikesRes.numberOfBlogs,
+      mostLikedBlogTitle: favoriteBlogRes.title,
+      mostlikedBlogUser: favoriteBlogRes.author,
+      mostLikedBlogLikes: favoriteBlogRes.likes,
+      mostBlogs: mostBlogsRes
+    })
+  }, [blogs])
+
+
+  /*============ STATISTICS FUNCTIONS END =============*/
+
+  // LOGIN CASE //
   if (user === null && registration === false) {
     return (
       <>
@@ -147,6 +252,7 @@ const App = () => {
     )
   }
 
+  // REGISTRTION CASE //
   if (user === null && registration === true ) {
     return (
       <>
@@ -209,10 +315,12 @@ const App = () => {
             user={user}
             blogServiceCreate={blogService.create}
             blogServiceGetOne = {blogService.getOne}
+            username={user.username}
           />
         </div>
         <section className='blogSection'>
-          <h3>Current saved blogs:</h3>
+          <h3 className="font-weight-bolder">Saved blogs:</h3>
+          <div className="line"></div>
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map(blog =>
@@ -224,11 +332,14 @@ const App = () => {
                 blogs={blogs}
                 makeMessage={makeMessage}
                 blogServiceUpdate = {blogServiceUpdate}
+
               />
             )}
         </section>
       </section>
-      <footer className='text-center text-white-50 mt-5 footer'>Made by Pavel Stastny @2020</footer>
+      <AboutUsers stats = { stats } blogs = {blogs}  mostLikes = {mostLikes} favoriteBlog = {favoriteBlog} registeredUsers = { registeredUsers } />
+      <Footer/>
+
     </main>
   )
 }

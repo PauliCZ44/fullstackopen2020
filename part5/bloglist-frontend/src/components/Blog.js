@@ -38,10 +38,14 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) =
       title: blog.title,
       url: blog.url
     }
-    blogServiceUpdate(blogToPut)
+    await blogServiceUpdate(blogToPut)
     console.log('like given')
     setLikes(likes + 1)
     setLikeIsDiabled(true)
+
+    let allBlogs = await blogService.getAll()
+    setBlogs(allBlogs)
+
     setTimeout(() => {
       setLikeIsDiabled(false)
     }, 3000)                           // =========  LIKE SPAM PROTECTION  ==============

@@ -121,9 +121,6 @@ const RegistrationForm = (props) => {
           </button>
         </div>
       </form>
-      {props.password}
-      <p>x</p>
-      {props.passwordConfirm}
     </div>
   )
 
