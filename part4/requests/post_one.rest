@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdWxpQ1o0NCIsImlkIjoiNWY4YWYzYTkyZmNiZjEwYWRjNzBmYzIyIiwiaWF0IjoxNjAzMDIxNDExfQ.c4Ev3GNVdSK08wFZu89C8Dg8yZKkaKaiSirXOQDpjAg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBhdWxpQ1o0NDYiLCJpZCI6IjVmOGMyZTg5ZTRlMWM2MzU1Y2MxNTg3OSIsImlhdCI6MTYwMzAyMjQ4NX0.S1jEO9eFqUVnPQyk_YGW9DIg6JHZ3vEOzZDV0pB34WU
 
 {
 "title": "Im logged in and i have token", 
