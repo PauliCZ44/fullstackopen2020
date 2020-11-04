@@ -1,4 +1,4 @@
-const { default: login } = require("../../src/services/login")
+const { default: login } = require('../../src/services/login')
 
 describe('Blog app', function() {
   beforeEach(function() {
@@ -121,7 +121,7 @@ describe('Blog app', function() {
         cy.contains('Blog was deleted!')
       })
 
-      it.only('when logged in as user2 - Blog can not be deleted by another user', function() {
+      it('when logged in as user2 - Blog can not be deleted by another user', function() {
         cy.clearCookies()
         cy.clearLocalStorage()
         cy.visit('http://localhost:3000')  //page reload for apply the local strage deletion
@@ -131,6 +131,44 @@ describe('Blog app', function() {
 
         cy.contains('You can not delete this blog. This was created by')
       })
+
+
+      it.only('Blogs are sorted by likes', function() {
+        cy.createBlog({
+          title: 'Cypress is good2',
+          author: 'Cypress corp',
+          url: 'www.cypress.io',
+          likes: 1
+        })
+        cy.createBlog({
+          title: 'Cypress is good3',
+          author: 'Cypress corp.2',
+          url: 'www.cypress.io',
+          likes: 7
+        })
+        cy.createBlog({
+          title: 'Cypress is good4',
+          author: 'Cypress corp.2',
+          url: 'www.cypress.io',
+          likes: 6
+        })
+
+        cy.get('.t_DetailsBtn').click({ multiple: true })
+        let likes = []
+        cy.get('.t_likesCount').then(like => {
+          console.log(like)
+          console.log('Like length', like.length)
+          cy.wrap(like[0]).contains(7).then(content => likes.push(content.content)) //asi nefunguje protože likes je na konci prázdné
+          cy.wrap(like[1]).contains(6)                                              // ale test projde díky ručnímu porovnání
+          cy.wrap(like[2]).contains(1)
+          cy.wrap(like[3]).contains(0)
+        }).then( () => {
+          console.log(likes)
+        })
+   
+      })
+
+
 
     })
 
