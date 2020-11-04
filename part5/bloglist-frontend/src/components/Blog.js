@@ -67,7 +67,7 @@ const Blog = ({ blog, blogs, setBlogs, makeMessage, user, blogServiceUpdate }) =
       <p className='mb-1'>User: {blog.user.username}</p>
       { blog.user.username === user.username || typeof blog.user  === 'string'  //pokud je přihlášený uživatel stejný jako uživatel co vytvořil blog
         ? <button
-          className='btn btn-sm btn-danger px-2 px-sm-4 py-1'
+          className='btn btn-sm btn-danger px-2 px-sm-4 py-1 t_DelBtn'
           onClick={handleDeleteBlog}>
           DELETE
         </button>

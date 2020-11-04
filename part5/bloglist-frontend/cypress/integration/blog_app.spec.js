@@ -1,3 +1,5 @@
+const { default: login } = require("../../src/services/login")
+
 describe('Blog app', function() {
   beforeEach(function() {
     cy.visit('http://localhost:3000')
@@ -7,7 +9,13 @@ describe('Blog app', function() {
       username: 'Pauli4',
       password: 'heslo'
     }
-    cy.request('POST', 'http://localhost:3001/api/users/', user)   // login the use
+    const user2 = {
+      name: 'Pavel Test',
+      username: 'Pauli2',
+      password: 'heslo'
+    }
+    cy.request('POST', 'http://localhost:3001/api/users/', user)   // create the user
+    cy.request('POST', 'http://localhost:3001/api/users/', user2)   // create the user
   })
 
   it('Login form is shown - front page can be opened ', function() {
@@ -91,8 +99,8 @@ describe('Blog app', function() {
       })
 
 
-      it.only('Blog can be liked and likes are increased by one', function() {
-        
+      it('Blog can be liked and likes are increased by one', function() {
+
         cy.contains('Cypress is good by Cypress corp').parent().parent().parent()
           .find('.t_DetailsBtn').click()
         cy.contains('Likes: 0')   //0 likes at start
@@ -102,11 +110,31 @@ describe('Blog app', function() {
         cy.contains('Likes: 1')    //1 like after click
         cy.contains('you liked "Cypress is good" by Cypress corp.')
       })
+
+
+      it('Blog can be deleted by user who created it', function() {
+        cy.contains('Cypress is good by Cypress corp').parent().parent().parent()
+          .find('.t_DetailsBtn').click()
+
+        cy.contains('Cypress is good by Cypress corp').parent().parent().parent()
+          .find('.t_DelBtn').click()
+        cy.contains('Blog was deleted!')
+      })
+
+      it.only('when logged in as user2 - Blog can not be deleted by another user', function() {
+        cy.clearCookies()
+        cy.clearLocalStorage()
+        cy.visit('http://localhost:3000')  //page reload for apply the local strage deletion
+        cy.login('Pauli2', 'heslo')
+        cy.contains('Cypress is good by Cypress corp').parent().parent().parent()
+          .find('.t_DetailsBtn').click()
+
+        cy.contains('You can not delete this blog. This was created by')
+      })
+
     })
 
   })
-
-
 })
 
 
