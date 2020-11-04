@@ -61,6 +61,19 @@ describe('Blog app', function() {
     */
     })
 
+    it('Blog can be added via form', function () {
+      cy.get('.addBlog-Btn').click()
+      cy.get('#inputAuthor').type('Cypress corp.')
+      cy.get('#inputTitle').type('E2E test with cypress')
+      cy.get('#inputURL').type('www.cypress.io')
+      cy.get('#saveBlogBtn').click()
+
+
+      cy.contains('Cypress corp.')
+      cy.contains('E2E test with cypress')
+      cy.contains('Blog "E2E test with cypress" was added')
+    })
+
     describe('and blog exists', function() {
       beforeEach( function() {
         cy.createBlog({
@@ -70,19 +83,24 @@ describe('Blog app', function() {
         })
       })
       /*
-      cy.get('#inputAuthor').type('Cypress corp.')
-      cy.get('#inputTitle').type('Cypress is good')
-      cy.get('#inputURL').type('www.cypress.io')
-      cy.get('#saveBlogBtn').click()
+
       */
       it('Blog can be viewed', function() {
         cy.contains('by Cypress corp.')
         cy.contains('Cypress is good')
       })
-      it('then example', function() {
-        cy.get('button').then( buttons => {
-          console.log('number of buttons', buttons.length)
-        })
+
+
+      it.only('Blog can be liked and likes are increased by one', function() {
+        
+        cy.contains('Cypress is good by Cypress corp').parent().parent().parent()
+          .find('.t_DetailsBtn').click()
+        cy.contains('Likes: 0')   //0 likes at start
+
+        cy.contains('Cypress is good by Cypress corp').parent().parent().parent()
+          .find('.t_LikeBtn').click()
+        cy.contains('Likes: 1')    //1 like after click
+        cy.contains('you liked "Cypress is good" by Cypress corp.')
       })
     })
 
@@ -105,5 +123,11 @@ it.only('other of those can be made important', function () {
 npm run test:e2e  run in CLI
 
 cypress run --config video=false
+
+      it('then example', function() {
+        cy.get('button').then( buttons => {
+          console.log('number of buttons', buttons.length)
+        })
+      })
 
  */
