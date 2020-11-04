@@ -3,7 +3,7 @@ body, html, main {
 }
 
 .appWrapper {
- min-height: calc(100vh - 208px - 64px - 158px);  /*One way to calc footer position - 100 vh minus header minus footer (margins included)*/
+ min-height: calc(100vh - 208px - 64px - 82px);  /*One way to calc footer position - 100 vh minus header minus footer (margins included)*/
 }
 
 h1, h2, h3 {
@@ -152,9 +152,11 @@ animation: opacity-and-scale 0.75s ease-in-out;
 
 
 .page-footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
   flex-shrink: 0;
   background-color: #343a40;
-  line-height: 40px;
+  line-height: 20px;
   background-color: #343a40;
   flex-shrink: 0;
 }

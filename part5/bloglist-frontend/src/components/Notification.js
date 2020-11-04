@@ -7,7 +7,7 @@ const Notification = ({ message, error, screen }) => {
   }
   const errorStyle = {
     color: 'red',
-    borderLeft: 'solid 3px #FF0000bb',
+    borderLeft: 'solid 3px rgb(255, 0, 0)',
   }
 
 
@@ -23,7 +23,7 @@ const Notification = ({ message, error, screen }) => {
     return null
   } else  {
     return (
-      <div className= {classStyle} style={error ? errorStyle : succesStyle }>
+      <div className= {classStyle} style={error ? errorStyle : succesStyle } id = 'messageComp'>
         {message}
       </div>
     )

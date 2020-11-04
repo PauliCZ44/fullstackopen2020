@@ -126,6 +126,7 @@ const BlogForm = ({ makeMessage, blogServiceCreate, blogServiceGetOne, toggleAdd
         <div className="form-group row">
           <div className="col-sm-10">
             <button
+              id = 'saveBlogBtn'
               type="submit"
               className="btn btn-info px-5 save-btn mr-4 mb-2"
               onClick={handleAddBlog}

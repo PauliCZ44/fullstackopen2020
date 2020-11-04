@@ -6,11 +6,24 @@ import Togglable from './Togglable'
 const AboutUsers = (props) => {
 
 
-  let usersToRender = props.registeredUsers.map( user =>
-    <li key={user.id}> {user.username } ({user.blogs.length} blogs) </li>)
+  let usersToRender = props.registeredUsers
+    .sort((a, b) => b.blogs.length - a.blogs.length)
+    .map( user => {
+      let likeOfUser = user.blogs.reduce((accum, blog) => accum + blog.likes, 0)
+      return (
+        <li key={user.id}> <strong>{user.username }</strong> (<em>{user.blogs.length}</em> blogs; <em>{likeOfUser}</em> total likes) </li>
+      )
+    })
 
-  let filteredUsersToRender = props.registeredUsers.filter( user => user.blogs.length !== 0).map( user =>
-    <li key={user.id}> {user.username } ({user.blogs.length} blogs) </li>)
+  let filteredUsersToRender = props.registeredUsers
+    .filter( user => user.blogs.length !== 0)
+    .sort((a, b) => b.blogs.length - a.blogs.length)
+    .map( user => {
+      let likeOfUser = user.blogs.reduce((accum, blog) => accum + blog.likes, 0)
+      return (
+        <li key={user.id}> <strong>{user.username }</strong> (<em>{user.blogs.length}</em> blogs; <em>{likeOfUser}</em> total likes) </li>
+      )
+    })
   //console.log('Author com, stats::', props.stats)
   return (
     <div className='container grid-stats-area mt-3'>

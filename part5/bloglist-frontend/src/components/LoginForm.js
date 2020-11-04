@@ -26,6 +26,7 @@ const LoginForm = (props) => {
           />
         </div>
         <button
+          id = "login-btn"
           type="submit"
           className="btn btn-dark my-3 px-5 submitBtn"
           onClick={props.handleLogin}
