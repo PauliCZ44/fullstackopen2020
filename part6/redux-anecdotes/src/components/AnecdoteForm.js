@@ -9,17 +9,18 @@ const AnecdoteForm = () => {
 
   const createNew = async (e) => {
     e.preventDefault()
-    let value = e.target.content.value
-    if (value.length < 5) {
-      dispatch(displayMessage(`"${value}" is not valid. Too short. Minimum legth is 5 characters` ))
+    let valueFromInput = e.target.content.value
+    if (valueFromInput.length < 5) {
+      dispatch(displayMessage(`"${valueFromInput}" is not valid. Too short. Minimum legth is 5 characters` ))
       setTimeout(() => {
         dispatch(removeMessage())
       }, 5000)
     } else {
       e.target.content.value = ''
-      await anecdoteService.createNew(value)
-      dispatch(createAnec(value))
-      dispatch(displayMessage(`You created "${value}"` ))
+      let response = await anecdoteService.createNew(valueFromInput)
+      console.log("response", response)
+      dispatch(createAnec(response.content))  // or dispatch(createAnec(value))
+      dispatch(displayMessage(`You created "${valueFromInput}"` ))
       setTimeout(() => {
         dispatch(removeMessage())
       }, 5000)
