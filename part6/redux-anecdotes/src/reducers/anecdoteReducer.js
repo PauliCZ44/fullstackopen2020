@@ -17,6 +17,9 @@ const anecdoteReducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
+    case 'initialAnecdotes': {
+      return action.data
+    }
     case 'vote': {
       const anecToVote = state.find(a => a.id === action.id)
       console.log(anecToVote)
@@ -47,17 +50,23 @@ export const voteAnecdote = (anecdote) => {
   }
 
 //ACTION CREATOR 2
-  export const createAnec = (content) => {
-    console.log("CREATE ANEC ACTION")
-    return {
-      type: 'create',
-      data: {
-        content: content,
-        id: getId(),
-        votes: 0
-      }
+export const createAnec = (content) => {
+  console.log("CREATE ANEC ACTION")
+  return {
+    type: 'create',
+    data: {
+      content: content,
+      id: getId(),
+      votes: 0
     }
-    }
+  }
+  }
   
+export const initializeAnecdotes = (anecs) => {
+  return {
+    type: 'initialAnecdotes',
+    data: anecs
+  }
+}
 
 export default anecdoteReducer

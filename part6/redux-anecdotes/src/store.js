@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import anecdoteReducer from './reducers/anecdoteReducer'
+import anecdoteReducer, { initializeAnecdotes } from './reducers/anecdoteReducer'
 import NotificationReducer from './reducers/NotificationReducer'
 import filterReducer from './reducers/filterReducer'
 import anecdoteService from './services/anecdotes'
@@ -19,8 +19,9 @@ const store = createStore(
 
 
 
-anecdoteService.getAll().then(anec => 
-    anec.forEach(a => store.dispatch({ type: 'create', data: a }))
+anecdoteService.getAll().then(data => 
+   //  anec.forEach(a => store.dispatch({ type: 'create', data: a }))   /// this line was used at first, and worked
+   store.dispatch(initializeAnecdotes(data))
   )
   
 
