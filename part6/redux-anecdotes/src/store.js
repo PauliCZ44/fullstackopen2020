@@ -3,6 +3,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import NotificationReducer from './reducers/NotificationReducer'
 import filterReducer from './reducers/filterReducer'
+import anecdoteService from './services/anecdotes'
 
 const reducer =  combineReducers({
   filter: filterReducer,
@@ -15,5 +16,12 @@ const store = createStore(
   reducer, 
   composeWithDevTools()
   )
+
+
+
+anecdoteService.getAll().then(anec => 
+    anec.forEach(a => store.dispatch({ type: 'create', data: a }))
+  )
+  
 
 export default store
