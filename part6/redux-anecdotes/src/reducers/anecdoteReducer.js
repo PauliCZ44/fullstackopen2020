@@ -1,3 +1,5 @@
+import anecdoteService from '../services/anecdotes'
+
 const anecdotesAtStart = []
 
 const getId = () => (100000 * Math.random()).toFixed(0)
@@ -52,20 +54,22 @@ export const voteAnecdote = (anecdote) => {
 //ACTION CREATOR 2
 export const createAnec = (content) => {
   console.log("CREATE ANEC ACTION")
-  return {
+  return async (dispatch) => {
+  const result = await anecdoteService.createNew(content)
+  dispatch({
     type: 'create',
-    data: {
-      content: content,
-      id: getId(),
-      votes: 0
-    }
+    data: result
+    })
   }
-  }
-  
-export const initializeAnecdotes = (anecs) => {
-  return {
-    type: 'initialAnecdotes',
-    data: anecs
+}
+
+export const initializeAnecdotes = () => {
+  return async (dispatch) =>  {
+    const anecdotes = await anecdoteService.getAll()  //thanks to redux-thunk, function can be used in action creator as a return value of action creator
+    dispatch({    
+      type: 'initialAnecdotes',
+      data: anecdotes
+    })
   }
 }
 

@@ -17,9 +17,7 @@ const AnecdoteForm = () => {
       }, 5000)
     } else {
       e.target.content.value = ''
-      let response = await anecdoteService.createNew(valueFromInput)
-      console.log("response", response)
-      dispatch(createAnec(response.content))  // or dispatch(createAnec(value))
+      dispatch(createAnec(valueFromInput))  // or dispatch(createAnec(value))
       dispatch(displayMessage(`You created "${valueFromInput}"` ))
       setTimeout(() => {
         dispatch(removeMessage())

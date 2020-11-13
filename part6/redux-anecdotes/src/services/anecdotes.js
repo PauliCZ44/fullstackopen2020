@@ -4,7 +4,7 @@ let baseURL = 'http://localhost:3001/anecdotes'
 
 const getAll = async () => {
   let AllAnecdotes = await axios.get(baseURL)
-  console.log(AllAnecdotes.data)
+  //console.log(AllAnecdotes.data)
   return AllAnecdotes.data
 }
 
