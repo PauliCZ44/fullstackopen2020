@@ -12,11 +12,11 @@ const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject).sort((a, b) => b.votes-a.votes)
+const initialState = anecdotesAtStart.map(asObject).sort((a, b) => b.votes - a.votes)
 
 // MAIN REDUCER
 const anecdoteReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
+  // console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
     case 'initialAnecdotes': {
@@ -50,26 +50,26 @@ export const voteAnecdote = (newAnecToPut) => {
     dispatch({
       type: 'vote',
       id: result.id
-      })
-    } 
+    })
   }
+}
 
 //ACTION CREATOR 2
 export const createAnec = (content) => {
   console.log("CREATE ANEC ACTION")
   return async (dispatch) => {
-  const result = await anecdoteService.createNew(content)
-  dispatch({
-    type: 'create',
-    data: result
+    const result = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'create',
+      data: result
     })
   }
 }
 
 export const initializeAnecdotes = () => {
-  return async (dispatch) =>  {
+  return async (dispatch) => {
     const anecdotes = await anecdoteService.getAll()  //thanks to redux-thunk, function can be used in action creator as a return value of action creator
-    dispatch({    
+    dispatch({
       type: 'initialAnecdotes',
       data: anecdotes
     })

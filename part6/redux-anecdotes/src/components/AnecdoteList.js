@@ -7,17 +7,17 @@ import { makeAndRemoveMessage } from '../reducers/NotificationReducer'
 
 
 const AnecdoteList = (props) => {
-  console.log("state", props)
+  //console.log("state", props)
 
   const vote = (anecdote) => {
-    console.log('voting for', anecdote.id)
+    //console.log('voting for', anecdote.id)
 
     let newAnecToPut = {
       ...anecdote,
       votes: anecdote.votes + 1,
     }
     props.voteAnecdote(newAnecToPut)
-    props.makeAndRemoveMessage(`You voted for "${anecdote.content}"`, 10)
+    props.makeAndRemoveMessage(`You voted for "${anecdote.content}"`, 3)
   }
 
   return (

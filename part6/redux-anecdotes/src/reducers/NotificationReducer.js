@@ -1,19 +1,22 @@
 
 let initMessage = '-'
+let timeOutID
 
-export const displayMessage = (data) => {
+export const displayMessage = (data, id) => {
   console.log('DISPLAING')
   return {
-    type: 'display',
-    message: data
+    type: 'DISPLAY',
+    message: data,
+    id
   }
 }
 
-export const removeMessage = () => {
+export const removeMessage = (id) => {
   console.log('REMOVING')
   return {
-    type: 'remove',
-    message: initMessage
+    type: 'REMOVE',
+    message: initMessage,
+    id
   }
 }
 
@@ -22,30 +25,39 @@ export const removeMessage = () => {
 
 export const makeAndRemoveMessage = (text = '-', seconds = 3) => {
   let time = seconds * 1000
+  clearTimeout(timeOutID)   //This does the trick
   return async (dispatch) => {
     dispatch({
-      type: 'display',
+      type: 'DISPLAY',
       message: text
     })
-    setTimeout(() => {
+    timeOutID = setTimeout(() => {
       dispatch({
-        type: 'remove',
-        message: initMessage
+        type: 'REMOVE',
+        message: initMessage,
       })
     }, time)
   }
 }
 
-
+/* NOT IMPLEMENTED
+export const displayAndRemove =(text = '-', seconds = 3) => {
+  return async (dispatch) => {
+  dispatch({ 
+    type: 'DISPLAYANDREMOVE', 
+    message: text, 
+    expire: +new Date() + seconds*1000 })
+  }
+}
+*/
 //dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
-
 
 const NotificationReducer = (state = initMessage, action) => {
   switch (action.type) {
-    case 'display': {
+    case 'DISPLAY': {
       return action.message
     }
-    case 'remove': {
+    case 'REMOVE': {
       return action.message
     }
     default: return state
