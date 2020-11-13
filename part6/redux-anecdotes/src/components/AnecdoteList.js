@@ -1,46 +1,28 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 import { makeAndRemoveMessage } from '../reducers/NotificationReducer'
-const AnecdoteList = () => {
-  const dispatch = useDispatch()
+
+
+
+const AnecdoteList = (props) => {
+  console.log("state", props)
 
   const vote = (anecdote) => {
     console.log('voting for', anecdote.id)
+
     let newAnecToPut = {
-      content: anecdote.content,
+      ...anecdote,
       votes: anecdote.votes + 1,
-      id: anecdote.id
     }
-    dispatch(voteAnecdote(newAnecToPut))
-    dispatch(makeAndRemoveMessage(`You voted for "${anecdote.content}"`, 10))
-
+    props.voteAnecdote(newAnecToPut)
+    props.makeAndRemoveMessage(`You voted for "${anecdote.content}"`, 10)
   }
-
-  let searchInString = (str, subStr) => {   // pomocná funkce // helper function
-    //console.log(str, subStr)
-    if (str.indexOf(subStr) >= 0) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-
-  let filterStr = useSelector(state => state.filter)
-
-  // filtered or  not filtered anecdotes
-  let anecdotesToRender = useSelector(state => {
-    if (state.filter === "") {   //když je filter prázný tak nic nedělat
-      return state.anecdotes
-    } else {
-      return state.anecdotes.filter((a) =>
-        searchInString(a.content.toLowerCase(), filterStr.toLowerCase()))   //jinak vyfiltruj content, který obsahuje znaky z filtru 
-    }
-  })
 
   return (
     <>
-      {anecdotesToRender.map(anecdote =>
+      {props.anecdotes.map(anecdote =>
         <section key={anecdote.id}>
           <div>
             {anecdote.content}
@@ -55,4 +37,41 @@ const AnecdoteList = () => {
   )
 }
 
-export default AnecdoteList
+
+const mapStateToProps = (state) => {
+
+  let searchInString = (str, subStr) => {   // pomocná funkce // helper function
+    //console.log(str, subStr)
+    if (str.indexOf(subStr) >= 0) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  let sortedAnecdotes = state.anecdotes.sort((a, b) => b.votes - a.votes)
+
+  // filtered or  not filtered anecdotes
+  if (state.filter === "") {   //když je filter prázný tak nic nedělat
+    return { anecdotes: sortedAnecdotes }
+  } else {
+    return {
+      anecdotes: sortedAnecdotes
+        .filter((a) =>
+          searchInString(a.content.toLowerCase(), state.filter.toLowerCase()))
+    }   //jinak vyfiltruj content, který obsahuje znaky z filtru 
+  }
+
+
+  /* This has to return this: 
+  return {
+     anecdotes: state.anecdotes,
+    // NOT THIS line : filterStr: state.filter,//
+   }*/
+}
+
+const ConnectedAnecdoteList = connect(
+  mapStateToProps,
+  { voteAnecdote, makeAndRemoveMessage }
+)(AnecdoteList)
+
+export default ConnectedAnecdoteList

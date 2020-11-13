@@ -26,7 +26,7 @@ const anecdoteReducer = (state = initialState, action) => {
       const anecToVote = state.find(a => a.id === action.id)
       console.log(anecToVote)
       anecToVote.votes += 1
-      return state.map(anecdote => anecdote.id === action.id ? anecToVote : anecdote).sort((a, b) => b.votes-a.votes)   // projdi state a  pokud najdes anecdote se stejným ID tak ji nahraď anecToChange jinak vlož původní anecdote
+      return state.map(anecdote => anecdote.id === action.id ? anecToVote : anecdote)  // projdi state a  pokud najdes anecdote se stejným ID tak ji nahraď anecToChange jinak vlož původní anecdote
       //find anecdotes by id nd increase vote by 1
     }
     case 'create': {

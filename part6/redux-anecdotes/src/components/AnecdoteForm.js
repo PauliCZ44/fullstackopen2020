@@ -1,20 +1,19 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 import { createAnec } from '../reducers/anecdoteReducer'
 import { makeAndRemoveMessage } from '../reducers/NotificationReducer'
 
-const AnecdoteForm = () => {
-  const dispatch = useDispatch()
+const AnecdoteForm = (props) => {
 
   const createNew = async (e) => {
     e.preventDefault()
     let valueFromInput = e.target.content.value
     if (valueFromInput.length < 5) {
-      dispatch(makeAndRemoveMessage(`"${valueFromInput}" is not valid. Too short. Minimum legth is 5 characters`, 5))
+      props.makeAndRemoveMessage(`"${valueFromInput}" is not valid. Too short. Minimum legth is 5 characters`, 5)
     } else {
       e.target.content.value = ''
-      dispatch(createAnec(valueFromInput))  // or dispatch(createAnec(value))
-      dispatch(makeAndRemoveMessage(`You created "${valueFromInput}"`, 5))
+      props.createAnec(valueFromInput)  // or dispatch(createAnec(value))
+      props.makeAndRemoveMessage(`You created "${valueFromInput}"`, 5)
 
     }
   }
@@ -30,4 +29,4 @@ const AnecdoteForm = () => {
   )
 }
 
-export default AnecdoteForm
+export default connect(null, { createAnec, makeAndRemoveMessage })(AnecdoteForm)
