@@ -18,7 +18,7 @@ const createNew = async (dataLoad) => {
 }
 
 const voteForOne = async (anectodeToPut) => {
-  let url = baseURL+'/'+anectodeToPut.id
+  let url = baseURL + '/' + anectodeToPut.id
   const response = await axios.put(url, anectodeToPut)
   //console.log('Put METHDON, data:', response.data)
   return response.data

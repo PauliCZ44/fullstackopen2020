@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
-import { displayMessage, removeMessage } from '../reducers/NotificationReducer'
+import { makeAndRemoveMessage } from '../reducers/NotificationReducer'
 const AnecdoteList = () => {
   const dispatch = useDispatch()
 
@@ -9,14 +9,12 @@ const AnecdoteList = () => {
     console.log('voting for', anecdote.id)
     let newAnecToPut = {
       content: anecdote.content,
-      votes: anecdote.votes +1,
+      votes: anecdote.votes + 1,
       id: anecdote.id
     }
     dispatch(voteAnecdote(newAnecToPut))
-    dispatch(displayMessage(`You voted for "${anecdote.content}"` ))
-    setTimeout(() => {
-      dispatch(removeMessage())
-    }, 5000)
+    dispatch(makeAndRemoveMessage(`You voted for "${anecdote.content}"`, 10))
+
   }
 
   let searchInString = (str, subStr) => {   // pomocná funkce // helper function
@@ -33,16 +31,16 @@ const AnecdoteList = () => {
   // filtered or  not filtered anecdotes
   let anecdotesToRender = useSelector(state => {
     if (state.filter === "") {   //když je filter prázný tak nic nedělat
-        return state.anecdotes
+      return state.anecdotes
     } else {
       return state.anecdotes.filter((a) =>
-      searchInString(a.content.toLowerCase(), filterStr.toLowerCase()))   //jinak vyfiltruj content, který obsahuje znaky z filtru 
+        searchInString(a.content.toLowerCase(), filterStr.toLowerCase()))   //jinak vyfiltruj content, který obsahuje znaky z filtru 
     }
   })
 
   return (
     <>
-    {anecdotesToRender.map(anecdote =>
+      {anecdotesToRender.map(anecdote =>
         <section key={anecdote.id}>
           <div>
             {anecdote.content}

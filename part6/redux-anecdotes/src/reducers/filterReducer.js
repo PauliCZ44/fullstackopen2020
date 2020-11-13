@@ -10,7 +10,7 @@ export const addFilter = (data) => {
 const filterReducer = (state = '', action) => {
   switch (action.type) {
     case '': {
-     return state
+      return state
     }
     case 'filter': {
       return action.filterStr
