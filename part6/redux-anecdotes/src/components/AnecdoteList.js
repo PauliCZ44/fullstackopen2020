@@ -7,7 +7,12 @@ const AnecdoteList = () => {
 
   const vote = (anecdote) => {
     console.log('voting for', anecdote.id)
-    dispatch(voteAnecdote(anecdote))
+    let newAnecToPut = {
+      content: anecdote.content,
+      votes: anecdote.votes +1,
+      id: anecdote.id
+    }
+    dispatch(voteAnecdote(newAnecToPut))
     dispatch(displayMessage(`You voted for "${anecdote.content}"` ))
     setTimeout(() => {
       dispatch(removeMessage())

@@ -43,12 +43,15 @@ const anecdoteReducer = (state = initialState, action) => {
 
 
 //ACTION CREATOR 1
-export const voteAnecdote = (anecdote) => {
+export const voteAnecdote = (newAnecToPut) => {
   console.log("VOTE ANEC ACTION")
-  return {
-    type: 'vote',
-    id: anecdote.id
-  }
+  return async (dispatch) => {
+    const result = await anecdoteService.voteForOne(newAnecToPut)
+    dispatch({
+      type: 'vote',
+      id: result.id
+      })
+    } 
   }
 
 //ACTION CREATOR 2

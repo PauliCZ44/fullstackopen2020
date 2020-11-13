@@ -17,6 +17,13 @@ const createNew = async (dataLoad) => {
   return newAnec.data
 }
 
+const voteForOne = async (anectodeToPut) => {
+  let url = baseURL+'/'+anectodeToPut.id
+  const response = await axios.put(url, anectodeToPut)
+  //console.log('Put METHDON, data:', response.data)
+  return response.data
+}
+
 
 //export default { getAll }
-export default { getAll, createNew }
+export default { getAll, createNew, voteForOne }
