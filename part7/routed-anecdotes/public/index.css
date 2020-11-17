@@ -1,0 +1,22 @@
+body {
+  background-color: #313131;
+  color: #ddd;
+  max-width: 90ch;
+  margin: auto;
+}
+#root {
+  padding: 20px;
+}
+
+button {
+  padding: 0.33em 1em ;
+  margin:  1em  1em;
+  border-radius: 2px;
+  border: 1px solid black;
+}
+
+
+section {
+  margin-top: 1em;
+  border-bottom: 1px solid #000
+}
