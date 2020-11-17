@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   Link,
@@ -14,9 +13,13 @@ const Menu = (props) => {
   const padding = {
     paddingRight: 5,
   };
+  const match = useRouteMatch('/anecdotes/:id')
+  console.log("match:", match)
+  const anecdote = match 
+  ? props.anecdotes.find(a => a.id == match.params.id)
+  : null
   return (
     <>
-      <Router>
         <Link to="/anecdotes" style={padding}>
           anecdotes
         </Link>
@@ -34,13 +37,12 @@ const Menu = (props) => {
             <About />
           </Route>
           <Route path="/anecdotes/:id">
-            <SingleAnecdote anecdotes={props.anecdotes} />
+            <SingleAnecdote  anecdote = {anecdote}/>
           </Route>
           <Route path="/">
             <AnecdoteList anecdotes={props.anecdotes} />
           </Route>
         </Switch>
-      </Router>
     </>
   );
 };
@@ -58,11 +60,9 @@ const AnecdoteList = ({ anecdotes }) => (
   </div>
 );
 
-const SingleAnecdote = ({anecdotes}) => {
-  console.log("Anecs", anecdotes)
+const SingleAnecdote = ({anecdote}) => {
+  console.log("Anecs", anecdote)
   const id = useParams().id
-
-  const anecdote = anecdotes.find(a  => a.id === id)
   console.log(anecdote, "id:", id)
   return (
     <>
