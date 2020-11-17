@@ -29,9 +29,10 @@ const Menu = (props) => {
         <Link to="/about" style={padding}>
           about
         </Link>
+        <p>{props.notification}</p>
         <Switch>
           <Route path="/create">
-            <CreateNew addNew={props.addNew} />
+            <CreateNew addNew={props.addNew} setNotification = {props.setNotification}/>
           </Route>
           <Route path="/about">
             <About />
@@ -110,18 +111,22 @@ const Footer = () => (
 );
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState("");
-  const [author, setAuthor] = useState("");
-  const [info, setInfo] = useState("");
+  const [content, setContent] = useState("")
+  const [author, setAuthor] = useState("")
+  const [info, setInfo] = useState("")
+  const history = useHistory()
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     props.addNew({
       content,
       author,
       info,
       votes: 0,
     });
+    props.setNotification(`You created a anecdote "${content}"!` )
+    setTimeout(() => {props.setNotification("")}, 10000)
+    history.push('/')
   };
 
   return (
@@ -203,7 +208,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu anecdotes={anecdotes} addNew={addNew}  />
+      <Menu anecdotes={anecdotes} addNew={addNew}  setNotification = {setNotification} notification={notification}/>
       <Footer />
     </div>
   );

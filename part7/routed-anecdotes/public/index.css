@@ -20,3 +20,11 @@ section {
   margin-top: 1em;
   border-bottom: 1px solid #000
 }
+
+a{
+  color: rgb(133, 133, 255) ;
+}
+
+a:visited {
+  color: rgb(160, 160, 250) ;
+}
