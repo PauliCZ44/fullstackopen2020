@@ -3,7 +3,7 @@ import {
   Switch,
   Route,
   Link,
-  useRouteMatch,;
+  useRouteMatch,
   useHistory,
   useParams,
 } from "react-router-dom";
@@ -15,11 +15,7 @@ const Menu = (props) => {
   const padding = {
     paddingRight: 5,
   };
-  const match = useRouteMatch("/anecdotes/:id");
-  console.log("match:", match);
-  const anecdote = match
-    ? props.anecdotes.find((a) => a.id === match.params.id)
-    : null;
+
   return (
     <>
       <Link to="/anecdotes" style={padding}>
@@ -32,23 +28,6 @@ const Menu = (props) => {
         about
       </Link>
       <p>{props.notification}</p>
-      <Switch>
-        <Route path="/create">
-          <CreateNew
-            addNew={props.addNew}
-            setNotification={props.setNotification}
-          />
-        </Route>
-        <Route path="/about">
-          <About />
-        </Route>
-        <Route path="/anecdotes/:id">
-          <SingleAnecdote anecdote={anecdote} />
-        </Route>
-        <Route path="/">
-          <AnecdoteList anecdotes={props.anecdotes} />
-        </Route>
-      </Switch>
     </>
   );
 };
@@ -110,7 +89,7 @@ const CreateNew = (props) => {
     history.push("/");
   };
 
-  const getAttrForBtn = ({resetValue, ...others}) => others
+  const getAttrForBtn = ({resetValue, ...others}) => others   //helper function that returns only "others" which is all atributes except reset (that atrr result in err in console). As a parametr you have to pass a hook, that hook return values and functions, and you have to separete those
 
   return (
     <div>
@@ -156,22 +135,25 @@ const App = () => {
     },
   ]);
 
-
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0);
     setAnecdotes(anecdotes.concat(anecdote));
   };
 
+  const match = useRouteMatch("/anecdotes/:id");
+  console.log("match:", match);
+  const anecdote = match
+    ? anecdotes.find((a) => a.id === match.params.id)
+    : null;
+
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
 
   const vote = (id) => {
     const anecdote = anecdoteById(id);
-
     const voted = {
       ...anecdote,
       votes: anecdote.votes + 1,
     };
-
     setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
@@ -184,6 +166,23 @@ const App = () => {
         setNotification={setNotification}
         notification={notification}
       />
+        <Switch>
+        <Route path="/create">
+          <CreateNew
+            addNew={addNew}
+            setNotification={setNotification}
+          />
+        </Route>
+        <Route path="/about">
+          <About />
+        </Route>
+        <Route path="/anecdotes/:id">
+          <SingleAnecdote anecdote={anecdote} />
+        </Route>
+        <Route path="/">
+          <AnecdoteList anecdotes={anecdotes} />
+        </Route>
+      </Switch>
       <Footer />
     </div>
   );
