@@ -1,7 +1,7 @@
 //import React, { useState, useEffect } from 'react'
 import React from 'react'
-//import { Link } from 'react-bootstrap-icons'
-
+import ReactDOM from 'react-dom'
+import { Link } from 'react-router-dom'
 import Togglable from './Togglable'
 
 const AboutUsers = (props) => {
@@ -11,9 +11,9 @@ const AboutUsers = (props) => {
     .sort((a, b) => b.blogs.length - a.blogs.length)
     .map( user => {
       let likeOfUser = user.blogs.reduce((accum, blog) => accum + blog.likes, 0)
-      let url = `/users/:${user.id}`
+      let url = `/users/${user.id}`
       return (
-        <p key={user.id}> <a href={url}>{user.username }</a> (<em>{user.blogs.length}</em> blogs; <em>{likeOfUser}</em> total likes) </p>
+        <p key={user.id}> <Link to={url}>{user.username }</Link> (<em>{user.blogs.length}</em> blogs; <em>{likeOfUser}</em> total likes) </p>
       )
     })
 

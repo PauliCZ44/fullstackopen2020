@@ -1,9 +1,9 @@
 import React from 'react'
 
-const userView = (props) => {
+const SingleUserView = (props) => {
   return(
     <p>individial user view</p>
   )
 }
 
-export default userView
+export default SingleUserView

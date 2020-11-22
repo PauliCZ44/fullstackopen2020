@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 const reducer = combineReducers({
   blogs: blogReducer,
   notif: NotificationReducer, //in Notification component, we need to use "useSelector(state => state.messages)" to get this state
-  user: userReducer
+  users: userReducer
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

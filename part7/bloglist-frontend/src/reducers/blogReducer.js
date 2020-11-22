@@ -96,11 +96,11 @@ export const createBlog = (content, username) => {
 export const likeBlog = (blogToLike) => {
   console.log('LIKE BLOG ACTION')
   return async (dispatch) => {
-    await blogService.put(blogToLike)
     dispatch({
       type: 'LIKE',
       id: blogToLike.id
     })
+    await blogService.put(blogToLike)
   }
 }
 

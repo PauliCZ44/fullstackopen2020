@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react'
 import { mostLikes, favoriteBlog, mostBlogs } from './helper/statistics'
 import LoginForm from './components/LoginForm'
@@ -10,15 +11,32 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import registerService from './services/register'
 import Footer from './components/Footer'
-import userService from './services/users'
+import NavMenu from './components/NavMenu'
+import AllUsersDetails from './components/AllUsersDetails'
+import SingleUserView from './components/SingleUserView'
+
+
+
+
+import {
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useHistory,
+  useParams,
+} from 'react-router-dom'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { makeAndRemoveMessage } from './reducers/NotificationReducer'
 import { initBlogs } from './reducers/blogReducer'
+import { initializeUsers, Login, Logout, SetFromLocalStorage } from './reducers/userReducer'
+
 
 //import userService from '../services/users'
 
 import './App.css'
+import login from './services/login'
 
 const App = () => {
 
@@ -31,7 +49,9 @@ const App = () => {
   const [name, setName] = useState('')
   const [addNewVisible, setAddNewVisible] = useState(false)
   const [registration, setRegistration] = useState(false)
-  const [registeredUsers, setRegisteredUsers] = useState([])
+
+  //const [registeredUsers, setRegisteredUsers] = useState([])
+
   const [stats, setStats] = useState({
     mostLikes: 0,
     mostLikesUser: '',
@@ -44,29 +64,33 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initBlogs())
-    console.log('blog should init')
+    dispatch(initializeUsers())
+    console.log('blog and users should init')
   }, [dispatch])
 
   let blogs = useSelector(state => {
     return state.blogs.blogs
   })
 
-  console.log('rBlogs', blogs)
-
-  useEffect(() => {
+  /*useEffect(() => {
     //blogService.getAll().then((blogs) => setBlogs(blogs))
-    userService.getAllUsers().then((users) => setRegisteredUsers(users))
-  }, [])
-  /*
-  useEffect(() => {
-    userService.getAllUsers().then((users) => setRegisteredUsers(users))
-  }, [blogs])  //why is there blogs ?*/
+    //userService.getAllUsers().then((users) => setRegisteredUsers(users))
+    //this effect should be replaced with useSelector
+  }, [])*/
+
+  let registeredUsers = useSelector(state => {
+    return state.users.users
+  })
+
+  console.log('rUsers', registeredUsers)
+
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       // console.log('Local storage', user.token)
+      SetFromLocalStorage(user)
       setUser(user)
       blogService.setToken(user.token)
     } else {
@@ -89,6 +113,7 @@ const App = () => {
       const loggedUser = await loginService.login({ username, password })
       blogService.setToken(loggedUser.token) //setting token for user
       setUser(loggedUser)
+      Login({ username, password })
       setUsername('')
       setPassword('')
       dispatch(makeAndRemoveMessage('You were logged in', 5))
@@ -96,6 +121,7 @@ const App = () => {
         'loggedBlogAppUser',
         JSON.stringify(loggedUser)
       )
+
     } catch (exception) {
       console.log(exception)
       dispatch(makeAndRemoveMessage('Wrong credentials', 5, true))
@@ -225,53 +251,66 @@ const App = () => {
               Log Out
             </button>
           </p>
+          <nav>
+            <NavMenu/>
+          </nav>
         </div>
       </header>
-      <section className='container appWrapper'>
-        <div className='wrapNotif'>
-          <Notification
+      <Switch>
+        <Route path="/blogs">
+          <section className='container appWrapper'>
+            <div className='wrapNotif'>
+              <Notification
 
-            screen={'blogList'}
-          />
-        </div>
-        <button
-          onClick={toggleAddNewBlog}
-          className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5 addBlog-Btn'
-          /*</div>{/* style={hideWhenVisible}}*/
-        >
-          CREATE A NEW BLOG
-        </button>
-        <div style={showWhenVisible}>
-          <BlogForm
-            //setBlogs={setBlogs}
-            blogs={blogs}
-            toggleAddNewBlog={toggleAddNewBlog}
-            user={user}
-            blogServiceCreate={blogService.create}
-            blogServiceGetOne={blogService.getOne}
-            username={user.username}
-          />
-        </div>
-        <section className='blogSection'>
-          <h3 className='font-weight-bolder'>Saved blogs:</h3>
-          <div className='line'></div>
-          {blogs
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                user={user}
-                likes={blog.likes}
+                screen={'blogList'}
               />
-            ))}
-        </section>
-      </section>
-      <AboutUsers
-        stats={stats}
-        blogs={blogs}
-        registeredUsers={registeredUsers}
-      />
+            </div>
+            <button
+              onClick={toggleAddNewBlog}
+              className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5 addBlog-Btn'
+              /*</div>{/* style={hideWhenVisible}}*/
+            >
+          CREATE A NEW BLOG
+            </button>
+            <div style={showWhenVisible}>
+              <BlogForm
+                //setBlogs={setBlogs}
+                blogs={blogs}
+                toggleAddNewBlog={toggleAddNewBlog}
+                user={user}
+                blogServiceCreate={blogService.create}
+                blogServiceGetOne={blogService.getOne}
+                username={user.username}
+              />
+            </div>
+            <section className='blogSection'>
+              <h3 className='font-weight-bolder'>Saved blogs:</h3>
+              <div className='line'></div>
+              {blogs
+                .sort((a, b) => b.likes - a.likes)
+                .map((blog) => (
+                  <Blog
+                    key={blog.id}
+                    blog={blog}
+                    user={user}
+                    likes={blog.likes}
+                  />
+                ))}
+            </section>
+          </section>
+          <AboutUsers
+            stats={stats}
+            blogs={blogs}
+            registeredUsers={registeredUsers}
+          />
+        </Route>
+        <Route exact path="/users">
+          <AllUsersDetails/>
+        </Route>
+        <Route path='/users/:id'>
+          <SingleUserView user={user}/>
+        </Route>
+      </Switch>
       <Footer />
     </main>
   )
