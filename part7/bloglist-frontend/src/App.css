@@ -1,0 +1,225 @@
+body, html, main {
+  background-color: whitesmoke;
+}
+
+.appWrapper {
+ min-height: calc(100vh - 208px - 64px - 82px);  /*One way to calc footer position - 100 vh minus header minus footer (margins included)*/
+}
+
+h1, h2, h3 {
+  color: #0e0e0e
+}
+
+h2, h3, h4, h5, h6, .h2, .h3, .h4, .h5, .h6 {
+  margin-bottom: 0.5rem;
+  font-family: ‘Oswald’, sans-serif;
+  font-weight: 500;
+  line-height: 1.2;
+  color: inherit;
+  }
+
+  h1, .h1 {
+    font-family: 'Alfa Slab One', cursive;
+    font-weight: 300;
+    letter-spacing: 2px;
+  }
+
+p, div, a, span {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.blogHeader {
+border-width: 5px;
+font-weight: 500;
+animation: opacity-and-scale 0.75s ease-in-out;
+}
+
+.bigLeftBorder {
+  border-bottom: 4px solid #75797e!important;
+  border-right: 4px solid #75797e!important;
+  border-radius: 5px;
+}
+
+.login-card {
+  max-width: 550px;
+ margin-right: auto;
+ margin-left: auto;
+ animation: opacity-and-scale 0.55s ease-in-out;
+}
+
+.login-notif {
+ padding-left: 1rem;
+ font-weight: 600;
+ max-width: 550px;
+ margin-right: auto;
+ margin-left: auto;
+ animation: opacity-and-scale 0.55s ease-in-out;
+}
+
+.addBlog-card {
+  margin-right: auto;
+  margin-left: auto;
+  animation: opacity 0.55s ease-in-out;
+}
+
+.addBlog-card h3 {
+  font-family: 'Alfa Slab One', cursive;
+}
+
+.addBlog-Btn {
+  max-width: 750px;
+  box-shadow: 2px 2px 10px grey;;
+}
+
+.line{
+  border-top: 5px #252525 solid;
+  border-radius: 5px;
+}
+
+/* Adding blog panel as a floating card */
+@media screen and (min-width: 576px) {
+  .addBlog-panel {
+    border-top: 8px black solid;
+    background-color: rgba(255, 255, 255, 0.97);
+    position: absolute;
+    z-index: 5;
+    min-width: 320px;
+    top: 235px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 576px) {
+  .addBlog-panel{
+      width: 510px;
+  }
+}
+@media (min-width: 768px) { 
+  .addBlog-panel{
+      width: 690px;
+  }
+}
+@media (min-width: 992px) {
+  .addBlog-panel {
+      width: 930px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .addBlog-panel {
+      width: 1110px;
+  }
+}
+
+
+.add-blog-notif {
+  padding-left: 1rem;
+  font-weight: 600;
+  max-width: 750px;
+  margin-right: auto;
+  margin-left: auto;
+  animation: opacity 0.75s ease-in-out;
+}
+
+.notFilledForm {
+  background-color: rgba(255, 73, 73, 0.432);
+}
+
+.wrapNotif {
+  min-height: 24px;
+}
+
+.submitBtn{
+  box-shadow:  2px 2px 10px grey;
+}
+
+.logout-btn {
+  border: lightslategrey 1px solid;
+}
+
+.blogHeader h5 {
+  font-weight: 750;
+}
+
+.save-btn, .cancel-btn{
+  box-shadow:  2px 2px 6px 0px grey
+}
+
+
+.bg-black{
+  background-color: #1a1a1a
+}
+
+
+.page-footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  flex-shrink: 0;
+  background-color: #343a40;
+  line-height: 20px;
+  background-color: #343a40;
+  flex-shrink: 0;
+}
+
+footer {
+  background-color: #343a40;
+  color: #b6b3b3;
+  width: 100%;
+  z-index: 1;
+  margin-top: 25px;
+  margin-bottom:0px;
+  font-size: 0.7rem;
+}
+
+.footerText {
+  color: #949292;
+  text-decoration-style: dotted;
+  font-size: 0.7rem !important;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+
+@media screen and (min-width: 576px) {
+  .footerText {
+    padding-left: 3vw;
+    padding-right: 3vw;
+    
+  }
+}
+
+.footerText:hover {
+  text-decoration-style: dotted;
+  color: rgb(205, 235, 255);
+  text-decoration: solid dotted white;
+};
+
+
+@keyframes opacity-and-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1.0;
+    transform: scale(1);
+  }
+}
+
+@keyframes opacity {
+  from {
+    opacity: 0.05;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1.0;
+    transform: scale(1.0);
+  }
+}
+
+/*====================== Grid area buttons ========================*/
+.grid-stats-area {
+  display: grid;
+  grid-template-columns:  repeat(auto-fit, minmax(250px, 1fr)) ;
+  grid-gap: 1em;
+}
