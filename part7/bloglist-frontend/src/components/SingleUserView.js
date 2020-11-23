@@ -45,7 +45,7 @@ const SingleUserView = (props) => {
           <ul>
             {blogsToRender}
           </ul>
-          <Link to = "/users">Bo back to page with all users</Link>
+          <Link to = "/users">Go back to page with all users</Link>
         </div>
       </div>
     </>

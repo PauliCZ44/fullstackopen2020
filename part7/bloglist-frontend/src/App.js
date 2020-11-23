@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import React, { useState, useEffect } from 'react'
 import { mostLikes, favoriteBlog, mostBlogs } from './helper/statistics'
 import LoginForm from './components/LoginForm'
@@ -16,14 +16,7 @@ import AllUsersDetails from './components/AllUsersDetails'
 import SingleUserView from './components/SingleUserView'
 import SingleBlogView from './components/SingleBlogView'
 
-import {
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useHistory,
-  useParams,
-} from 'react-router-dom'
+import {   Switch,   Route } from 'react-router-dom'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { makeAndRemoveMessage } from './reducers/NotificationReducer'
@@ -237,95 +230,96 @@ const App = () => {
 
   // MAIN APP SCREEN
   return (
-    <main>
-      <header className='bg-black pt-5 pb-2 mb-5'>
-        <h1 className='text-center text-light'>BLOGS APP</h1>
-        <div className='container'>
-          <p className='text-right text-white-50'>
+    <>
+      <main className = "main-app">
+        <header className='bg-black pt-5 pb-2 mb-5'>
+          <h1 className='text-center text-light'>BLOGS APP</h1>
+          <div className='container'>
+            <p className='text-right text-white-50'>
             Logged as {user.username}. Welcome back!
-            <button
-              onClick={handleLogout}
-              className='btn btn-dark btn-sm px-4 ml-4 logout-btn'
-            >
+              <button
+                onClick={handleLogout}
+                className='btn btn-dark btn-sm px-4 ml-4 logout-btn'
+              >
               Log Out
-            </button>
-          </p>
-          <nav>
+              </button>
+            </p>
             <NavMenu/>
-          </nav>
-        </div>
-      </header>
-      <Switch>
-        <Route exact path="/users">
-          <AllUsersDetails
-            stats={stats}
-            blogs={blogs}
-            registeredUsers={registeredUsers}/>
-        </Route>
-        <Route path='/users/:id'>
-          <SingleUserView
-            user={user}
-            stats={stats}
-            blogs={blogs}
-            registeredUsers={registeredUsers}/>
-        </Route>
-        <Route path='/blogs/:id'>
-          <SingleBlogView
-            user={user}
-            stats={stats}
-            blogs={blogs}
-            registeredUsers={registeredUsers}/>
-        </Route>
-        <Route path="/">
-          <section className='container appWrapper'>
-            <div className='wrapNotif'>
-              <Notification
+          </div>
+        </header>
+        <Switch>
+          <Route exact path="/users">
+            <AllUsersDetails
+              stats={stats}
+              blogs={blogs}
+              registeredUsers={registeredUsers}/>
+          </Route>
+          <Route path='/users/:id'>
+            <SingleUserView
+              user={user}
+              stats={stats}
+              blogs={blogs}
+              registeredUsers={registeredUsers}/>
+          </Route>
+          <Route path='/blogs/:id'>
+            <SingleBlogView
+              user={user}
+              stats={stats}
+              blogs={blogs}
+              registeredUsers={registeredUsers}/>
+          </Route>
+          <Route path="/">
+            <section className='container appWrapper'>
+              <div className='wrapNotif'>
+                <Notification
 
-                screen={'blogList'}
-              />
-            </div>
-            <button
-              onClick={toggleAddNewBlog}
-              className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5 addBlog-Btn'
+                  screen={'blogList'}
+                />
+              </div>
+              <button
+                onClick={toggleAddNewBlog}
+                className='btn btn-block btn-dark addBlog-card p-3 my-3 mb-5 addBlog-Btn'
               /*</div>{/* style={hideWhenVisible}}*/
-            >
+              >
           CREATE A NEW BLOG
-            </button>
-            <div style={showWhenVisible}>
-              <BlogForm
+              </button>
+              <div style={showWhenVisible}>
+                <BlogForm
                 //setBlogs={setBlogs}
-                blogs={blogs}
-                toggleAddNewBlog={toggleAddNewBlog}
-                user={user}
-                blogServiceCreate={blogService.create}
-                blogServiceGetOne={blogService.getOne}
-                username={user.username}
-              />
-            </div>
-            <section className='blogSection'>
-              <h3 className='font-weight-bolder'>Saved blogs:</h3>
-              <div className='line'></div>
-              {blogs
-                .sort((a, b) => b.likes - a.likes)
-                .map((blog) => (
-                  <Blog
-                    key={blog.id}
-                    blog={blog}
-                    user={user}
-                    likes={blog.likes}
-                  />
-                ))}
+                  blogs={blogs}
+                  toggleAddNewBlog={toggleAddNewBlog}
+                  user={user}
+                  blogServiceCreate={blogService.create}
+                  blogServiceGetOne={blogService.getOne}
+                  username={user.username}
+                />
+              </div>
+              <section className='blogSection'>
+                <h3 className='font-weight-bolder'>Saved blogs:</h3>
+                <div className='line'></div>
+                {blogs
+                  .sort((a, b) => b.likes - a.likes)
+                  .map((blog) => (
+                    <Blog
+                      key={blog.id}
+                      blog={blog}
+                      user={user}
+                      likes={blog.likes}
+                    />
+                  ))}
+              </section>
             </section>
-          </section>
-          <AboutUsers
-            stats={stats}
-            blogs={blogs}
-            registeredUsers={registeredUsers}
-          />
-        </Route>
-      </Switch>
+            <AboutUsers
+              stats={stats}
+              blogs={blogs}
+              registeredUsers={registeredUsers}
+            />
+          </Route>
+        </Switch>
+
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }
 

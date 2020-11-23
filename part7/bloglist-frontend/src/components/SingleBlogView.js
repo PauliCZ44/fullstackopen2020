@@ -24,7 +24,7 @@ const SingleBlogView = (props) => {
           <p>Likes: {blog.likes}</p>
           <p>Aded by: {blog.user.username}</p>
         </div>
-        <Link to = "/blogs">Bo back to page with all blogs</Link>
+        <Link to = "/blogs">Go back to page with all blogs</Link>
       </div>
     </>
   )
