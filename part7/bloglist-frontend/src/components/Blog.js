@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 import { makeAndRemoveMessage } from '../reducers/NotificationReducer'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 //import blogService from '../services/blogs'
@@ -81,12 +82,12 @@ const Blog = ({ blog, user, likes }) => {
     </div>
   )
 
-
+  let url = '/blogs/'+blog.id
   return (
     <div className="border-left border-top  bg-white rounded my-4 blogHeader">
       <div className="bigLeftBorder border-dark ml-0 pl-2 py-2">
         <div className='d-flex'>
-          <h5 className='py-1 mb-2'>{blog.title} <span className='text-muted'> by {blog.author} </span></h5>
+          <h5 className='py-1 mb-2'> <Link to = {url}>{blog.title}</Link><span className='text-muted'> by {blog.author} </span></h5>
           <button
             className='btn btn-sm btn-info px-2 px-sm-4 py-1 ml-auto mr-1 mr-sm-3 align-self-center t_DetailsBtn'
             onClick={toggleShowDetails}>

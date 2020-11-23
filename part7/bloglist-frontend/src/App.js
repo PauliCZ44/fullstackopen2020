@@ -14,9 +14,7 @@ import Footer from './components/Footer'
 import NavMenu from './components/NavMenu'
 import AllUsersDetails from './components/AllUsersDetails'
 import SingleUserView from './components/SingleUserView'
-
-
-
+import SingleBlogView from './components/SingleBlogView'
 
 import {
   Switch,
@@ -43,6 +41,7 @@ const App = () => {
   const dispatch = useDispatch()
 
   const [username, setUsername] = useState('') //states for user management
+  let Ruser = useSelector(state => state.users.loggedUser)
   const [user, setUser] = useState(null)
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
@@ -90,13 +89,12 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       // console.log('Local storage', user.token)
-      SetFromLocalStorage(user)
+      dispatch(SetFromLocalStorage(user))
       setUser(user)
-      blogService.setToken(user.token)
     } else {
       console.log('Local storage empty, you have to login to app')
     }
-  }, [])
+  }, [dispatch])
 
   const toggleAddNewBlog = () => {
     setAddNewVisible(!addNewVisible)
@@ -111,16 +109,16 @@ const App = () => {
     event.preventDefault()
     try {
       const loggedUser = await loginService.login({ username, password })
-      blogService.setToken(loggedUser.token) //setting token for user
+      //blogService.setToken(loggedUser.token) //setting token for user
       setUser(loggedUser)
-      Login({ username, password })
+      dispatch(Login({ username, password }))
       setUsername('')
       setPassword('')
       dispatch(makeAndRemoveMessage('You were logged in', 5))
-      window.localStorage.setItem(
+      /*window.localStorage.setItem(
         'loggedBlogAppUser',
         JSON.stringify(loggedUser)
-      )
+      )*/
 
     } catch (exception) {
       console.log(exception)
@@ -136,6 +134,7 @@ const App = () => {
 
   const handleLogout = () => {
     console.log('logging out')
+    dispatch(Logout())
     setUser(null)
     window.localStorage.removeItem('loggedBlogAppUser')
     dispatch(makeAndRemoveMessage('You were logged out', 5, true))
@@ -257,7 +256,27 @@ const App = () => {
         </div>
       </header>
       <Switch>
-        <Route path="/blogs">
+        <Route exact path="/users">
+          <AllUsersDetails
+            stats={stats}
+            blogs={blogs}
+            registeredUsers={registeredUsers}/>
+        </Route>
+        <Route path='/users/:id'>
+          <SingleUserView
+            user={user}
+            stats={stats}
+            blogs={blogs}
+            registeredUsers={registeredUsers}/>
+        </Route>
+        <Route path='/blogs/:id'>
+          <SingleBlogView
+            user={user}
+            stats={stats}
+            blogs={blogs}
+            registeredUsers={registeredUsers}/>
+        </Route>
+        <Route path="/">
           <section className='container appWrapper'>
             <div className='wrapNotif'>
               <Notification
@@ -303,12 +322,6 @@ const App = () => {
             blogs={blogs}
             registeredUsers={registeredUsers}
           />
-        </Route>
-        <Route exact path="/users">
-          <AllUsersDetails/>
-        </Route>
-        <Route path='/users/:id'>
-          <SingleUserView user={user}/>
         </Route>
       </Switch>
       <Footer />

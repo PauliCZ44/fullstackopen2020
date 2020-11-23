@@ -3,17 +3,20 @@ import { Link } from 'react-router-dom'
 
 const NavMenu = (props) => {
   const padding = {
-    paddingRight: 5,
+    paddingRight: 30,
+    color: 'deepskyblue'
   }
 
   return (
     <>
-      <Link to="/blogs" style={padding}>
+      <div>
+        <Link to="/blogs" style={padding}>
         BLOGS
-      </Link>
-      <Link to="/users" style={padding}>
+        </Link>
+        <Link to="/users" style={padding}>
         USERS
-      </Link>
+        </Link>
+      </div>
     </>
   )
 }

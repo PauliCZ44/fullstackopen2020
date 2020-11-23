@@ -18,18 +18,23 @@ export const Login =  (data) => {
   return async (dispatch) => {
     const loggedUser = await loginService.login({ username: data.username, password: data.password })
     blogService.setToken(loggedUser.token) //setting token for user
+    window.localStorage.setItem(
+      'loggedBlogAppUser',
+      JSON.stringify(loggedUser)
+    )
     dispatch ({
       type: 'LOGIN',
-      data: data.username
+      data: loggedUser.username
     })
     console.log('ACTION LOGIN')
-    return loggedUser
   }
 }
 
 export const Logout = () => {
-  return {
-    type: 'LOGOUT'
+  return async (dispatch) => {
+    dispatch({
+      type: 'LOGOUT'
+    })
   }
 }
 
@@ -37,7 +42,7 @@ export const SetFromLocalStorage = (data) => {
   blogService.setToken(data.token)
   return {
     type: 'SET_FROM_LOCAL_STORAGE',
-    data: data
+    data: data.username
   }
 }
 
@@ -47,7 +52,7 @@ const userReducer = (state = initialState, action) => {
     return { ...state, users: [...action.users] }
   }
   case 'LOGIN': {
-    return { ...state, loggedUser: 'action.data' }
+    return { ...state, loggedUser: action.data }
   }
   case 'LOGOUT': {
     return { ...state, loggedUser: '' }
